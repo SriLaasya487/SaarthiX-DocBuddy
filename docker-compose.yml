@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16
+    environment: { POSTGRES_USER: docbuddy, POSTGRES_PASSWORD: docbuddy, POSTGRES_DB: docbuddy }
+    volumes: [pgdata:/var/lib/postgresql/data]
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://docbuddy:docbuddy@db:5432/docbuddy
+      JWT_SECRET: change-me
+      DEBUG: "true"
+      CORS_ORIGINS: http://localhost:5173
+    ports: ["8000:8000"]
+    depends_on: [db]
+  web:
+    image: node:22
+    working_dir: /app
+    volumes: ["./frontend:/app"]
+    command: sh -c "npm install && npm run dev -- --host"
+    environment: { VITE_API_URL: http://localhost:8000 }
+    ports: ["5173:5173"]
+volumes: { pgdata: {} }

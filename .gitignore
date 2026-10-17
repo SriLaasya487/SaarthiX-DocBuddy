@@ -1,0 +1,8 @@
+node_modules/
+dist/
+__pycache__/
+*.db
+.env
+test.db
+test_media/
+.pytest_cache/
