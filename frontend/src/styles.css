@@ -1,6 +1,6 @@
 :root {
-  --ink: #3A2A1F; --paper: #FBF5EA; --card: #FFFDF8; --line: #E6D8C0;
-  --saffron: #F0A81C; --sos: #C62828; --ok: #3C7A4F; --muted: #6B5748; --clay: #C4572F;
+  --ink: #2E2218; --paper: #FFF8EC; --card: #FFFFFF; --line: #EADFC9;
+  --saffron: #F4A300; --sos: #C62828; --ok: #2F7A4B; --muted: #685645; --clay: #B94A1E;
   font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 22px; line-height: 1.55;
 }
 :root { color-scheme: light; }
@@ -109,3 +109,19 @@ h1, h2, .brand, .logo { font-family: "Fraunces", Georgia, serif; font-weight: 70
 .tiles { margin-top: .4rem; }
 input, textarea, select { font-size: 1.1rem; }
 .tools button { font-size: .95rem; padding: .5rem .8rem; }
+
+/* ---- v4: calmer palette, header, tour ---- */
+.big.primary { color: var(--ink); }
+.bar { position: sticky; top: 0; z-index: 15; }
+.tools button { font-size: 1rem; min-width: 2.8rem; min-height: 2.8rem; }
+.chips { display: flex; gap: .5rem; flex-wrap: wrap; margin: 0 0 1rem; }
+.chips button { background: var(--card); color: var(--ink); border: 2px solid var(--line); border-radius: 999px; padding: .45rem 1rem; font-size: .95rem; cursor: pointer; }
+.tiles.small .tile { background: var(--card); box-shadow: 0 4px 0 var(--line); }
+h2 { color: var(--clay); }
+details.more { margin: .5rem 0; } details.more > summary { cursor: pointer; font-weight: 700; padding: .9rem 1rem; background: var(--card); border: 2px solid var(--line); border-radius: 14px; list-style: none; }
+details.more[open] > summary { margin-bottom: .8rem; }
+.tour { position: fixed; inset: 0; z-index: 60; background: var(--paper); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 1rem; padding: 2rem 1.5rem; }
+.tour .em { font-size: 5.5rem; line-height: 1; } .tour h1 { color: var(--clay); } .tour p { max-width: 26rem; margin: 0; font-size: 1.2rem; }
+.tour .dots { display: flex; gap: .5rem; } .tour .dots span { width: .8rem; height: .8rem; border-radius: 50%; background: var(--line); } .tour .dots span.on { background: var(--clay); }
+.tour .big { max-width: 26rem; }
+.tour .skip { background: none; border: 0; color: var(--muted); font: inherit; text-decoration: underline; cursor: pointer; }

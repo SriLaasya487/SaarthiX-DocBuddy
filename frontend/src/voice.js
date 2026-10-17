@@ -1,6 +1,7 @@
 // Voice helpers on top of the browser Web Speech API.
 // Production: swap for Bhashini / AI4Bharat (or Google/Azure fallback) behind the same two functions.
 import { t, hasTx } from "./i18n.js";
+export const SUPPORTED = ["hi-IN", "te-IN", "en-IN"];   // languages with full text translations
 export const LANGUAGES = [
   { code: "hi-IN", label: "हिन्दी" }, { code: "te-IN", label: "తెలుగు" }, { code: "ta-IN", label: "தமிழ்" },
   { code: "bn-IN", label: "বাংলা" }, { code: "mr-IN", label: "मराठी" }, { code: "kn-IN", label: "ಕನ್ನಡ" },
