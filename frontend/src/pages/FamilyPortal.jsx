@@ -20,7 +20,7 @@ export default function FamilyPortal({ user, onLogout }) {
 
   return (
     <div className="shell wide">
-      <header className="bar"><strong>DocBuddy · {user.role === "doctor" ? "Doctor" : "Family"}</strong><span className="tools"><button onClick={async () => { const r = await api.get("/inbox"); alert(r.slice(0, 8).map((n) => n.text).join("\n") || "No messages"); }}>Inbox</button><span>{user.name}</span><button onClick={onLogout}>Sign out</button></span></header>
+      <header className="bar"><strong>AarogyaSaathi · {user.role === "doctor" ? "Doctor" : "Family"}</strong><span className="tools"><button onClick={async () => { const r = await api.get("/inbox"); alert(r.slice(0, 8).map((n) => n.text).join("\n") || "No messages"); }}>Inbox</button><span>{user.name}</span><button onClick={onLogout}>Sign out</button></span></header>
       <main className="page">
         {elders.length === 0 && <p className="note">Nobody has shared anything with you yet. Ask your parent to add your mobile number under “Who can see what”.</p>}
         <nav className="tabs">{elders.map((e) => <button key={e.id} className={sel === e.id ? "on" : ""} onClick={() => open(e.id)}>{e.name} · {e.local_time}</button>)}</nav>
