@@ -37,10 +37,10 @@ function Talk({ lang }) {
   const [log, setLog] = useState([]); const [t, setT] = useState("");
   const send = async (text) => { if (!text.trim()) return; const r = await api.post("/companion/chat", { text }); setLog((l) => [...l, ["me", text], ["bot", r.reply]]); setT(""); speak(r.reply, lang); };
   return <>
-    {log.map(([w, x], i) => <div key={i} className={"card " + (w === "bot" ? "good" : "")}><p>{w === "bot" ? "DocBuddy: " : "You: "}{x}</p></div>)}
+    {log.map(([w, x], i) => <div key={i} className={"card " + (w === "bot" ? "good" : "")}><p>{w === "bot" ? "AarogyaSaathi: " : "You: "}{x}</p></div>)}
     {canListen() && <button className="big mic" onClick={async () => send(await dictate(lang))}>🎤 Talk</button>}
     <input value={t} onChange={(e) => setT(e.target.value)} placeholder="Or type here" onKeyDown={(e) => e.key === "Enter" && send(t)} />
-    <p className="note">DocBuddy is a friendly companion. It cannot give medical advice.</p>
+    <p className="note">AarogyaSaathi is a friendly companion. It cannot give medical advice.</p>
   </>;
 }
 
