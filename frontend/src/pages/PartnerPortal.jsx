@@ -16,7 +16,7 @@ export default function PartnerPortal({ user, onLogout }) {
   };
   return (
     <div className="shell wide">
-      <header className="bar"><strong>DocBuddy · {user.role === "chw" ? "Health worker" : "Organisation"}</strong><span className="tools"><span>{user.name}</span><button onClick={onLogout}>Sign out</button></span></header>
+      <header className="bar"><strong>AarogyaSaathi · {user.role === "chw" ? "Health worker" : "Organisation"}</strong><span className="tools"><span>{user.name}</span><button onClick={onLogout}>Sign out</button></span></header>
       <main className="page stack">
         {msg && <p className="note" role="status">{msg}</p>}
         {user.role === "partner" && <div className="card stack"><h3>Your organisation</h3>
