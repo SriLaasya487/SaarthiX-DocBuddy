@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api, setToken } from "../api.js";
+import { api, setToken, isDemo } from "../api.js";
 import { LANGUAGES, canListen, listen, parseDigits, speak } from "../voice.js";
 
 export default function Login({ onDone }) {
@@ -41,11 +41,18 @@ export default function Login({ onDone }) {
 
   return (
     <main className="center">
-      <h1 className="brand">DocBuddy</h1>
+      <h1 className="brand">AarogyaSaathi</h1>
       <p className="lede">Your care companion. You decide who sees what.</p>
 
       {step === "who" && (
         <section className="stack">
+          {isDemo && <>
+            <p className="note">Live demo with sample data. Pick a view:</p>
+            <button className="big ok" onClick={() => { setToken("demo-elder"); onDone({}); }}>▶ Try the demo as Sarala (senior, 72)</button>
+            <button className="big ok" onClick={() => { setToken("demo-family"); onDone({}); }}>▶ Try the demo as Rohan (her son)</button>
+            <button className="big ok" onClick={() => { setToken("demo-chw"); onDone({}); }}>▶ Try the demo as Meena (ASHA worker)</button>
+            <hr style={{ width: "100%" }} />
+          </>}
           <button className="big primary" onClick={() => { setRole("elder"); setStep("lang"); speak("Please choose your language", "en-IN"); }}>I am the senior</button>
           <button className="big" onClick={() => { setRole("family"); setStep("phone"); }}>I am family or a doctor</button>
           <button className="big" onClick={() => { setRole("chw"); setStep("phone"); }}>I am a health worker (ASHA / nurse)</button>
