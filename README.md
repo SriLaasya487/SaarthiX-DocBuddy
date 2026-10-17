@@ -1,47 +1,36 @@
-# DocBuddy
+# AarogyaSaathi
 
 A voice-first, privacy-respecting care companion for elders and their families.
-The elder decides what is shared; nothing leaves without an active consent record.
+The elder decides what is shared. Nothing leaves without an active consent record.
 
-## Structure
-- `backend/`  FastAPI + SQLAlchemy (SQLite for dev, PostgreSQL via docker-compose). OTP login, consent engine, audit log, medicines, check-in, vitals, doctor-type suggestion, SOS, fall countdown, family summary.
-- `frontend/` React + Vite. Elder app (large buttons, voice in/out, Hear again / Slow down, SOS, fall prompt) and Family portal.
-- `docs/`     Feature catalog (90 features), roadmap, principles, architecture.
-- `data/`     Catalog as CSV/JSON.
+Live demo : https://srilaasya487.github.io/SaarthiX-DocBuddy/
 
-## Run locally
-```bash
-# backend
-cd backend && pip install -r requirements.txt && cp .env.example .env
-uvicorn app.main:app --reload            # http://localhost:8000/docs
-pytest                                    # 6 tests: consent gate, audit, SOS, fall, vitals...
+## The problem
+India has 150M+ people aged 60+. Many live apart from their children, struggle with small text and English apps, miss medicines, and are targets of phone scams. Family worries; seniors feel watched.
 
-# frontend
-cd frontend && cp .env.example .env && npm install && npm run dev   # http://localhost:5173
-```
-Or everything at once: `docker compose up --build`.
+## Our answer
+- Voice in, voice out, 8 Indian languages, large buttons, "hear again" and "slow down".
+- Consent first:the senior chooses who sees what, for how long, and can revoke by voice. A spoken audit log answers "who saw my information?".
+- Safety: SOS, fall detection with a 60-second "Are you okay?", scam checker, emergency card.
+- Medicines: reminders, low-stock alerts, prescription scan, pillbox photo check.
+- Family portal shows only what the senior allowed, plus a care-team task board.
+- ASHA / partner portal for community health workers, with anonymous area statistics.
+- Works on slow phones and offline (queued actions sync later).
 
-Dev mode (`DEBUG=true`) returns the OTP in the API response so you can sign in without an SMS gateway.
-Create an elder and a family user (two browser profiles), then as the elder open **Who can see what**.
+## Try it in 2 minutes (demo script)
+1. Open the link, tap **Try the demo as Sarala**. Point out the large buttons and spoken greeting.
+2. **My medicines** → tap *I took it*. The badge clears.
+3. **Daily check-in** → answer "Not well" → the app *asks Sarala* before telling family.
+4. **Who can see what** → show current sharing, tap *Stop*, then *Who saw my information?*
+5. Home → **Please check** → approve Rohan's request to see her mood.
+6. Tap **⚠ Simulate fall** → "Are you okay?" → no answer escalates to contacts (real backend).
+7. **Staying safe → Is this a scam?** → paste "Your KYC is blocked, share OTP".
+8. Sign out → **Try the demo as Rohan** → show the family view with only the shared items.
 
-## What is implemented vs. planned
-Implemented: voice sign-up/language, OTP login, consent (per data type, temporary, revoke, spoken audit log),
-daily 5-question check-in, medicine reminders + stock alert + missed-dose note, doctor-type suggestion (never diagnoses),
-voice vitals logging with flags, appointments, emergency card, SOS, fall detection + 60s escalation,
-ask-elder-first help alerts, mood-pattern note, weekly report with good-news, family portal (consented sections only).
+## Honest status
+The live site runs on built-in sample data so anyone can click through it. The real FastAPI backend, consent engine, audit log and 43 tests are in `backend/`. See `docs/IMPLEMENTATION.md` for what is and is not proven. SMS, WhatsApp and IVR channels are stubs.
 
-Stubs / next: `services/notify.py` (WhatsApp/SMS/FCM), IVR check-in, Bhashini/AI4Bharat speech
-(swap `frontend/src/voice.js`), OCR prescription scan, offline mode, multi-caregiver roles, and the rest of `docs/ROADMAP.md`.
-
-
-## v2: all 90 catalogue features are in the code
-
-See `docs/IMPLEMENTATION.md` for the feature-by-feature map (verified by a test) and, importantly, the list of what is **not** proven.
-
-```bash
-cd backend && pip install -r requirements.txt && python -m pytest      # 43 tests, incl. the 90-feature registry check
-uvicorn app.main:app --reload                                         # http://localhost:8000/docs , /features
-cd ../frontend && npm install && npm run dev
-```
-Delete `backend/docbuddy.db` once after upgrading (new tables/columns; migrations are not included yet).
-New optional settings are in `backend/.env.example` (channels, AI companion, pricing).
+## Run the full stack locally
+    cd backend && pip install -r requirements.txt && cp .env.example .env && uvicorn app.main:app --reload
+    cd frontend && cp .env.example .env && npm install && npm run dev
+Set `VITE_API_URL` to use a real backend instead of demo mode.
