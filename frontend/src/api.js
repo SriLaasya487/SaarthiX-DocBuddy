@@ -1,6 +1,9 @@
 import { cacheGet, cacheSet, enqueue, flush, toOp } from "./offline.js";
+import { demoCall } from "./demo.js";
 
 const BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// Demo mode: no backend needed. On the live site it is on automatically when VITE_API_URL is not set.
+export const isDemo = import.meta.env.VITE_DEMO === "true" || (import.meta.env.PROD && !import.meta.env.VITE_API_URL);
 let token = localStorage.getItem("db_token") || "";
 
 export const setToken = (t) => { token = t; t ? localStorage.setItem("db_token", t) : localStorage.removeItem("db_token"); };
@@ -8,6 +11,7 @@ export const hasToken = () => !!token;
 const NOCACHE = /^\/(me\/export|.*\/(file|audio))/;
 
 async function call(method, path, body) {
+  if (isDemo) return demoCall(method, path, body, token);
   let res;
   try {
     res = await fetch(BASE + path, {
@@ -37,10 +41,12 @@ export const api = {
   del: (p) => call("DELETE", p),
   // authenticated download (audio / printable pages) -> blob URL
   blob: async (p) => {
+    if (isDemo) return URL.createObjectURL(new Blob(["<h2>AarogyaSaathi</h2><p>Printable page (demo).</p>"], { type: "text/html" }));
     const r = await fetch(BASE + p, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
     if (!r.ok) throw new Error(`Error ${r.status}`);
     return URL.createObjectURL(await r.blob());
   },
 };
-export const syncNow = () => flush(api.post).catch(() => 0);
+export const syncNow = () => (isDemo ? Promise.resolve(0) : flush(api.post).catch(() => 0));
 window.addEventListener("online", syncNow);
+
