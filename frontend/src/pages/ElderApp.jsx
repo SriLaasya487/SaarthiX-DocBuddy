@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { api, syncNow } from "../api.js";
+import { api, syncNow, isDemo } from "../api.js";
 import { applySettings, attention } from "../a11y.js";
 import { pendingCount, scheduleDoseAlarms } from "../offline.js";
 import { canListen, hearAgain, listen, loadLexicon, slowDown, speak, voiceNav } from "../voice.js";
@@ -23,7 +23,7 @@ const Settings = lazy(() => import("./Settings.jsx"));
 const TILES = [
   { id: "checkin", label: "Daily check-in", icon: "☺" }, { id: "meds", label: "My medicines", icon: "✚" }, { id: "health", label: "BP, sugar & visits", icon: "♡" },
   { id: "records", label: "My records", icon: "▤" }, { id: "doctor", label: "Which doctor?", icon: "☎" }, { id: "companion", label: "Companion", icon: "✿" },
-  { id: "assistant", label: "Ask DocBuddy", icon: "🎤" }, { id: "safety", label: "Staying safe", icon: "⛨" }, { id: "daily", label: "Learn & benefits", icon: "✎" },
+  { id: "assistant", label: "Ask AarogyaSaathi", icon: "🎤" }, { id: "safety", label: "Staying safe", icon: "⛨" }, { id: "daily", label: "Learn & benefits", icon: "✎" },
   { id: "community", label: "Friends", icon: "☻" }, { id: "sharing", label: "Who can see what", icon: "⚿" }, { id: "settings", label: "Settings", icon: "⚙" },
 ];
 
@@ -65,14 +65,16 @@ export default function ElderApp({ user: u0, onLogout }) {
   return (
     <div className="shell">
       <header className="bar">
-        <strong>DocBuddy</strong>
+        <strong>AarogyaSaathi</strong>
         <span className="tools">
           <button aria-label="Hear it again" onClick={hearAgain}>🔊 Hear again</button>
           <button aria-label="Slow down" onClick={slowDown}>🐢 Slow down</button>
           {canListen() && <button aria-label="Say where to go" onClick={voiceGo}>🎤 Go to…</button>}
+          {isDemo && <button onClick={() => window.dispatchEvent(new Event("db-sim-fall"))}>⚠ Simulate fall</button>}
           <button onClick={onLogout}>Sign out</button>
         </span>
       </header>
+      {isDemo && <p className="note" style={{ padding: "0 1rem" }}>Demo mode: sample data, nothing is stored.</p>}
       {queued > 0 && <p className="note" style={{ padding: "0 1rem" }}>{queued} item(s) saved on this phone, waiting for the network.</p>}
       {home?.disaster && <p className="warn" style={{ padding: "0 1rem" }}><b>Extra safety mode is on.</b> <button className="back" onClick={() => go("safety")}>See what to do</button></p>}
 
