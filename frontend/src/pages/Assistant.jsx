@@ -22,12 +22,12 @@ export default function Assistant({ lang, onNavigate }) {
   };
   return (
     <section className="stack">
-      <h2>Ask DocBuddy</h2>
+      <h2>Ask AarogyaSaathi</h2>
       <p className="note">Try: “call my son”, “set alarm at 6 pm”, “bus to Charminar”, “pay my electricity bill”, “read the news”.</p>
       {log.map(([w, x], i) => <div className={"card " + (w === "bot" ? "good" : "")} key={i}><p>{x}</p></div>)}
       {canListen() && <button className="big mic" onClick={async () => run(await dictate(lang))}>🎤 Speak</button>}
       <input value={t} onChange={(e) => setT(e.target.value)} placeholder="Or type here" onKeyDown={(e) => e.key === "Enter" && run(t)} />
-      <p className="note">For payments you always check the amount and enter your own PIN. DocBuddy never pays for you.</p>
+      <p className="note">For payments you always check the amount and enter your own PIN. AarogyaSaathi never pays for you.</p>
     </section>
   );
 }
