@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { api, syncNow, isDemo } from "../api.js";
 import { applySettings, attention } from "../a11y.js";
 import { pendingCount, scheduleDoseAlarms } from "../offline.js";
+import { t as tr } from "../i18n.js";
 import { canListen, hearAgain, listen, loadLexicon, slowDown, speak, voiceNav } from "../voice.js";
 import CheckIn from "./CheckIn.jsx";
 import Medicines from "./Medicines.jsx";
@@ -35,6 +36,7 @@ export default function ElderApp({ user: u0, onLogout }) {
   const [call, setCall] = useState(null);
   const [alarm, setAlarm] = useState(null);
   const [fine, setFine] = useState(null);
+  const [more, setMore] = useState(false);
   const lang = user.language;
 
   useEffect(() => { applySettings(u0.settings || {}); loadLexicon(api.get); syncNow(); }, []);
@@ -48,7 +50,8 @@ export default function ElderApp({ user: u0, onLogout }) {
   const due = home?.due || [];
   useEffect(() => {
     if (view !== "home" || !home) return;
-    const parts = [`Namaste ${user.name}.`, due.length ? `You have ${due.length} medicine${due.length > 1 ? "s" : ""} to take.` : "Everything is on track.", ...(home.appointments || []).map((a) => a.speak), ...(home.reminders || []).map((r) => r.say), ...(home.nudges || []).map((n) => n.say)];
+    const nonEn = !lang.startsWith("en");
+    const parts = [tr("Namaste {name}.", lang, { name: user.name }), due.length ? tr("You have {n} medicine(s) to take.", lang, { n: due.length }) : tr("Everything is on track.", lang), ...(nonEn ? [] : [...(home.appointments || []).map((a) => a.speak), ...(home.reminders || []).map((r) => r.say), ...(home.nudges || []).map((n) => n.say)])];
     speak(parts.join(" "), lang); if (due.length || home.appointments?.length) attention();
   }, [view, !!home, due.length]);
 
@@ -61,17 +64,19 @@ export default function ElderApp({ user: u0, onLogout }) {
 
   const badge = (id) => (id === "meds" && due.length) || (id === "companion" && home?.unread_messages) || (id === "sharing" && home?.pending) ? <span className="badge">{id === "meds" ? due.length : id === "companion" ? home.unread_messages : home.pending}</span> : null;
   const queued = pendingCount();
+  const MAIN = ["checkin", "meds", "health", "sharing", "assistant", "safety"];
+  const shown = more ? TILES : MAIN.map((id) => TILES.find((x) => x.id === id));
 
   return (
     <div className="shell">
       <header className="bar">
         <strong className="logo">🪔 AarogyaSaathi</strong>
         <span className="tools">
-          <button aria-label="Hear it again" onClick={hearAgain}>🔊 Hear again</button>
-          <button aria-label="Slow down" onClick={slowDown}>🐢 Slow down</button>
-          {canListen() && <button aria-label="Say where to go" onClick={voiceGo}>🎤 Go to…</button>}
+          <button aria-label="Hear it again" onClick={hearAgain}>🔊 {tr("Hear again", lang)}</button>
+          <button aria-label="Slow down" onClick={slowDown}>🐢 {tr("Slow down", lang)}</button>
+          {canListen() && <button aria-label="Say where to go" onClick={voiceGo}>🎤 {tr("Go to…", lang)}</button>}
           {isDemo && <button onClick={() => window.dispatchEvent(new Event("db-sim-fall"))}>⚠ Simulate fall</button>}
-          <button onClick={onLogout}>Sign out</button>
+          <button onClick={onLogout}>{tr("Sign out", lang)}</button>
         </span>
       </header>
       {queued > 0 && <p className="note" style={{ padding: "0 1rem" }}>{queued} item(s) saved on this phone, waiting for the network.</p>}
@@ -87,17 +92,18 @@ export default function ElderApp({ user: u0, onLogout }) {
       <main className="page">
         {view === "home" && (
           <>
-            <h1 className="greet">Namaste, {user.name || "friend"} 🙏</h1>
+            <h1 className="greet">{tr("Namaste", lang)}, {user.name || "friend"} 🙏</h1>
             <p className="today">{new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}</p>
             {due.length > 0 && <button className="due" onClick={() => go("meds")}>Medicine time: {due[0].name}{due.length > 1 ? ` and ${due.length - 1} more` : ""} →</button>}
             {(home?.appointments || []).map((a) => <button className="due" key={a.id} onClick={() => go("health")}>{a.speak}</button>)}
             {(home?.reminders || []).map((r, i) => <div className="card good" key={i}><p>🎉 {r.say}</p></div>)}
             {(home?.nudges || []).map((n, i) => <div className="card" key={i}><p>{n.say}</p></div>)}
             <div className="tiles small">
-              {TILES.map((t) => <button key={t.id} className="tile" onClick={() => go(t.id)}><span className="ico" aria-hidden>{t.icon}</span>{t.label}{badge(t.id)}</button>)}
+              {shown.map((t) => <button key={t.id} className="tile" onClick={() => go(t.id)}><span className="ico" aria-hidden>{t.icon}</span>{tr(t.label, lang)}{badge(t.id)}</button>)}
             </div>
+            <button className="big" style={{ marginTop: "1rem" }} onClick={() => setMore(!more)}>{more ? tr("Fewer", lang) : tr("More", lang)}</button>
             {home?.pending > 0 && <button className="big primary" style={{ marginTop: "1rem" }} onClick={() => go("pending")}>Please check {home.pending} thing(s)</button>}
-            <button className="big ok" style={{ marginTop: "1rem" }} onClick={sayFine}>👍 Tell my family I am fine</button>
+            <button className="big ok" style={{ marginTop: "1rem" }} onClick={sayFine}>👍 {tr("Tell my family I am fine", lang)}</button>
             {fine && fine.draft && <div className="card stack"><p>{fine.draft}</p><button className="big ok" onClick={async () => { const r = await api.post("/imfine?approve=true"); setFine(null); speak(r.speak, lang); }}>Yes, send it</button><button className="big" onClick={() => setFine(null)}>No</button></div>}
           </>
         )}
@@ -120,7 +126,7 @@ export default function ElderApp({ user: u0, onLogout }) {
 
       {caption && <div className="captions" role="status" aria-live="polite">{caption}</div>}
       {isDemo && <p className="foot">Sample data for preview. Nothing here is stored.</p>}
-      <SosButton />
+      <SosButton lang={lang} />
     </div>
   );
 }

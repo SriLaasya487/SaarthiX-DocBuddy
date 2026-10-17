@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
+import { t as tr } from "../i18n.js";
 import { canListen, isNo, isYes, listen, speak } from "../voice.js";
 
 // Five simple questions, answered by voice or large buttons.
@@ -44,24 +45,24 @@ export default function CheckIn({ lang, onDone }) {
     const id = result.ask_to_inform_family_alert_id || result.ask_low_mood_alert_id;
     return (
       <section className="stack">
-        <h2>Thank you!</h2>
+        <h2>{tr("Thank you!", lang)}</h2>
         {result.pattern_note && <p className="note">{result.pattern_note}</p>}
         {id ? (
           <>
-            <p>{result.ask_low_mood_alert_id && !result.ask_to_inform_family_alert_id ? "You have felt low for some weeks. Shall I let someone you trust know, so they can call you?" : "Shall I tell your family that you need help?"}</p>
-            <button className="big primary" onClick={async () => { await api.post(`/alerts/${id}/respond`, { allow: true }); onDone(); }}>Yes, tell them</button>
-            <button className="big" onClick={async () => { await api.post(`/alerts/${id}/respond`, { allow: false }); onDone(); }}>No, don't tell</button>
+            <p>{result.ask_low_mood_alert_id && !result.ask_to_inform_family_alert_id ? tr("You have felt low for some weeks. Shall I let someone you trust know, so they can call you?", lang) : tr("Shall I tell your family that you need help?", lang)}</p>
+            <button className="big primary" onClick={async () => { await api.post(`/alerts/${id}/respond`, { allow: true }); onDone(); }}>{tr("Yes, tell them", lang)}</button>
+            <button className="big" onClick={async () => { await api.post(`/alerts/${id}/respond`, { allow: false }); onDone(); }}>{tr("No, don't tell", lang)}</button>
           </>
-        ) : <button className="big primary" onClick={onDone}>Done</button>}
+        ) : <button className="big primary" onClick={onDone}>{tr("Done", lang)}</button>}
       </section>
     );
   }
   return (
     <section className="stack">
-      <p className="step">Question {i + 1} of {QUESTIONS.length}</p>
-      <h2>{q.text}</h2>
-      {q.options.map(([v, label]) => <button key={String(v)} className="big" onClick={() => answer(v)}>{label}</button>)}
-      {canListen() && <button className="big mic" onClick={byVoice}>🎤 Answer by voice</button>}
+      <p className="step">{tr("Question {i} of {n}", lang, { i: i + 1, n: QUESTIONS.length })}</p>
+      <h2>{tr(q.text, lang)}</h2>
+      {q.options.map(([v, label]) => <button key={String(v)} className="big" onClick={() => answer(v)}>{tr(label, lang)}</button>)}
+      {canListen() && <button className="big mic" onClick={byVoice}>{tr("🎤 Answer by voice", lang)}</button>}
     </section>
   );
 }

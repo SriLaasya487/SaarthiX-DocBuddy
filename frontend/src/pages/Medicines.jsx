@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "../api.js";
 import { speak } from "../voice.js";
+import { t as tr } from "../i18n.js";
 import { analyse } from "../pillvision.js";
 
 export default function Medicines({ lang, onPending }) {
@@ -15,11 +16,11 @@ export default function Medicines({ lang, onPending }) {
 
   const load = () => { api.get("/medicines/due").then(setDue); api.get("/medicines").then(setAll); };
   useEffect(load, []);
-  useEffect(() => { if (due[0]) speak(due[0].speak + " Tap I took it when done.", lang); }, [due.length]);
+  useEffect(() => { if (due[0]) speak(tr("Time for {name}. Tap I took it when done.", lang, { name: due[0].name }), lang); }, [due.length]);
   const say = (m) => { setMsg(m); speak(m, lang); };
 
-  const took = async (d) => { const r = await api.post(`/medicines/${d.medicine_id}/taken`, { slot: d.slot }); say(r.queued ? "Saved on this phone. It will sync when the network returns." : "Thank you. Noted."); load(); };
-  const snooze = async (d) => { const r = await api.post(`/medicines/${d.medicine_id}/snooze`, { slot: d.slot, minutes: 10 }); say("I will remind you in 10 minutes." + (r.offer_tell_family ? " You have snoozed a few times. You can ask family for help." : "")); load(); };
+  const took = async (d) => { const r = await api.post(`/medicines/${d.medicine_id}/taken`, { slot: d.slot }); say(r.queued ? "Saved on this phone. It will sync when the network returns." : tr("Thank you. Noted.", lang)); load(); };
+  const snooze = async (d) => { const r = await api.post(`/medicines/${d.medicine_id}/snooze`, { slot: d.slot, minutes: 10 }); say(tr("I will remind you in 10 minutes.", lang) + (r.offer_tell_family ? " You have snoozed a few times. You can ask family for help." : "")); load(); };
   const missed = async (d) => say((await api.post(`/medicines/${d.medicine_id}/missed`, { slot: d.slot })).speak);
   const add = async () => { await api.post("/medicines", { ...form, tablets: +form.tablets, stock: +form.stock }); setAdding(false); load(); };
 
@@ -56,20 +57,20 @@ export default function Medicines({ lang, onPending }) {
 
   return (
     <section className="stack">
-      <h2>Medicines</h2>
+      <h2>{tr("Medicines", lang)}</h2>
       {msg && <p className="note" role="status">{msg}</p>}
-      {due.length === 0 && <p className="note">Nothing due right now. 🎉</p>}
+      {due.length === 0 && <p className="note">{tr("Nothing due right now. 🎉", lang)}</p>}
       {due.map((d) => (
         <div className="card stack" key={d.medicine_id + d.slot}>
           <h3>{d.name}</h3><p>{d.tablets} tablet{d.tablets > 1 ? "s" : ""} · {d.slot}{d.snoozed ? ` · reminded ${d.snoozed}×` : ""}</p>
-          <button className="big ok" onClick={() => took(d)}>I took it</button>
-          <button className="big" onClick={() => snooze(d)}>Remind me in 10 minutes</button>
-          <button className="big" onClick={() => missed(d)}>I missed an earlier dose</button>
+          <button className="big ok" onClick={() => took(d)}>{tr("I took it", lang)}</button>
+          <button className="big" onClick={() => snooze(d)}>{tr("Remind me in 10 minutes", lang)}</button>
+          <button className="big" onClick={() => missed(d)}>{tr("I missed an earlier dose", lang)}</button>
           {d.offer_tell_family && <p className="note">Would you like family to give you a call? Use “Who can see what” → alerts, or press SOS if you need help.</p>}
         </div>
       ))}
 
-      <h3>All my medicines</h3>
+      <h3>{tr("All my medicines", lang)}</h3>
       {all.map((m) => (
         <div className="card stack" key={m.id}>
           <div className="row"><span>{m.name} — {m.tablets}× at {m.times.join(", ")}{m.color ? ` · ${m.color}` : ""}</span>{m.low_stock && <b className="warn">Running low ({m.days_left} days)</b>}</div>
@@ -82,7 +83,7 @@ export default function Medicines({ lang, onPending }) {
       ))}
       {all.length > 1 && <button className="big" onClick={interactions}>Check my medicines together</button>}
 
-      <h3>Add medicines</h3>
+      <h3>{tr("Add medicines", lang)}</h3>
       <input ref={file} type="file" accept="image/*" capture="environment" hidden onChange={(e) => scan(e.target.files[0])} />
       <button className="big mic" onClick={() => file.current.click()}>📷 Scan a prescription</button>
       <label>…or paste / type the prescription text<textarea rows={3} value={rx} onChange={(e) => setRx(e.target.value)} placeholder="Tab Metformin 500mg 1-0-1 x 30 days" /></label>
