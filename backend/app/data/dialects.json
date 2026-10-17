@@ -1,0 +1,17 @@
+{
+  "_note": "STARTER lexicon. Real coverage must come from field testing with elders (DB-075): collect mis-heard phrases via POST /dialect/feedback and extend this file.",
+  "intents": {
+    "yes": ["yes", "yeah", "ok", "okay", "haan", "han", "ha ji", "hanji", "ji haan", "avunu", "avnu", "sare", "aama", "aam", "hoo", "hau", "haa", "होय", "हाँ", "हां", "అవును", "ஆம்"],
+    "no": ["no", "nahi", "nahin", "nai", "nako", "kaadu", "illa", "illai", "naa", "na", "नहीं", "नको", "కాదు", "இல்லை"],
+    "pain": ["pain", "dard", "dukh", "dukhta", "nyaa", "noppi", "novu", "vali", "dard hota", "दर्द", "నొప్పి", "வலி"],
+    "good": ["good", "fine", "theek", "thik", "accha", "achha", "bagundi", "bagunna", "nanna", "nalam", "chhan", "bhalo", "बढ़िया", "ठीक", "అచ్చా", "நல்லா"],
+    "bad": ["bad", "not well", "bura", "tabiyat kharab", "baagaledu", "sari illa", "sariyilla", "waait", "kharab", "खराब", "బాగాలేదు"],
+    "help": ["help", "bachao", "madad", "sahayam", "sahaya", "udavi", "kapadandi", "मदद", "बचाओ", "సహాయం", "உதவி"]
+  },
+  "dialects": {
+    "te-IN:Telangana": {"avnu": "yes", "ledu": "no", "gaadu": "no", "nyaa": "pain", "baaledu": "bad", "gandarigolam": "bad"},
+    "hi-IN:Bhojpuri": {"haan ba": "yes", "na ba": "no", "dukhat ba": "pain", "thik ba": "good", "kharab ba": "bad", "madad kari": "help", "haal ba": "good"},
+    "mr-IN:Vidarbha": {"ho": "yes", "nahi re": "no", "dukhto": "pain", "bara aahe": "good", "tras hot aahe": "bad"},
+    "hi-IN:Haryanvi": {"haan re": "yes", "na re": "no", "dukh rya": "pain", "badhiya": "good"}
+  }
+}
