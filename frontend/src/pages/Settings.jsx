@@ -23,7 +23,7 @@ export default function Settings({ lang, user, onUser }) {
 
       <div className="card stack"><h3>Seeing & hearing</h3>
         <label>Text size ({Math.round(s.font_scale * 100)}%)<input type="range" min="1" max="2" step="0.1" value={s.font_scale} onChange={(e) => save({ font_scale: +e.target.value })} /></label>
-        <Toggle k="high_contrast" label="High contrast colours" /><Toggle k="captions" label="Show words on screen when DocBuddy speaks" />
+        <Toggle k="high_contrast" label="High contrast colours" /><Toggle k="captions" label="Show words on screen when AarogyaSaathi speaks" />
         <Toggle k="vibrate_flash" label="Vibrate and flash the screen for important alerts" />
         <label>Speaking speed<input type="range" min="0.5" max="1.4" step="0.1" value={s.speech_rate} onChange={(e) => save({ speech_rate: +e.target.value })} /></label>
         <label>Simple mode for slow phones<select value={s.lite_mode} onChange={(e) => save({ lite_mode: e.target.value })}><option value="auto">Automatic</option><option value="on">Always on</option><option value="off">Off</option></select></label></div>
@@ -31,21 +31,21 @@ export default function Settings({ lang, user, onUser }) {
       <div className="card stack"><h3>Language & how I speak</h3>
         <label>Language<select value={user.language} onChange={async (e) => { await api.patch("/me", { language: e.target.value }); onUser({ ...user, language: e.target.value }); }}>{LANGUAGES.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}</select></label>
         <label>My way of speaking (dialect)<select value={s.dialect} onChange={(e) => save({ dialect: e.target.value })}>{DIALECTS.map((d) => <option key={d} value={d}>{d || "standard"}</option>)}</select></label>
-        <p className="note">If DocBuddy mis-hears you, teach it:</p>
+        <p className="note">If AarogyaSaathi mis-hears you, teach it:</p>
         <label>What I said<input value={fb.heard} onChange={(e) => setFb({ ...fb, heard: e.target.value })} /></label>
         <label>What I meant<input value={fb.meant} onChange={(e) => setFb({ ...fb, meant: e.target.value })} /></label>
         <button className="big" disabled={!fb.heard || !fb.meant} onClick={async () => { await api.post("/dialect/feedback", { ...fb, dialect: s.dialect }); setFb({ heard: "", meant: "", dialect: "" }); setMsg("Thank you, this helps."); }}>Send</button></div>
 
       <div className="card stack"><h3>Reminders & nudges</h3>
         {[["hydration", "Drink water"], ["meal", "Meals"], ["walk", "A gentle walk"]].map(([k, l]) => <label className="chk" key={k}><input type="checkbox" checked={!!s.nudges?.[k]?.on} onChange={(e) => save({ nudges: { ...s.nudges, [k]: { ...(s.nudges?.[k] || {}), on: e.target.checked } } })} />{l}</label>)}
-        <Toggle k="activity_tracking" label="Let DocBuddy note my sleep and steps (from my phone or watch)" />
+        <Toggle k="activity_tracking" label="Let AarogyaSaathi note my sleep and steps (from my phone or watch)" />
         <label>Pharmacy WhatsApp number<input value={s.pharmacy_phone} inputMode="tel" onChange={(e) => setS({ ...s, pharmacy_phone: e.target.value })} onBlur={() => save({ pharmacy_phone: s.pharmacy_phone })} /></label>
         <label>Family doctor's mobile<input value={s.family_doctor_phone} inputMode="tel" onChange={(e) => setS({ ...s, family_doctor_phone: e.target.value })} onBlur={() => save({ family_doctor_phone: s.family_doctor_phone })} /></label>
         <label>Faith (for prayers)<select value={s.faith} onChange={(e) => save({ faith: e.target.value })}>{["", "hindu", "sikh", "muslim", "christian", "buddhist", "jain"].map((f) => <option key={f} value={f}>{f || "not set"}</option>)}</select></label>
         <button className="big" onClick={here}>📍 Save my area (for weather, prayer times)</button></div>
 
-      <div className="card stack"><h3>Phone calls (no smartphone needed)</h3><p>DocBuddy can phone you for the daily check-in and read your medicines. You answer by pressing numbers. Press 9 any time for an emergency.</p>
-        <label>How should DocBuddy reach me?<select value={user.channel} onChange={async (e) => { await api.patch("/me", { channel: e.target.value }); onUser({ ...user, channel: e.target.value }); }}><option value="app">App</option><option value="ivr">Phone call</option><option value="whatsapp">WhatsApp</option><option value="sms">SMS</option></select></label></div>
+      <div className="card stack"><h3>Phone calls (no smartphone needed)</h3><p>AarogyaSaathi can phone you for the daily check-in and read your medicines. You answer by pressing numbers. Press 9 any time for an emergency.</p>
+        <label>How should AarogyaSaathi reach me?<select value={user.channel} onChange={async (e) => { await api.patch("/me", { channel: e.target.value }); onUser({ ...user, channel: e.target.value }); }}><option value="app">App</option><option value="ivr">Phone call</option><option value="whatsapp">WhatsApp</option><option value="sms">SMS</option></select></label></div>
 
       <div className="card stack"><h3>Devices</h3>
         {devs.map((d) => <div className="row" key={d.id}><span>{d.kind}</span><span className="note">{d.last_sync ? "synced" : "not synced yet"}</span></div>)}
