@@ -1,0 +1,812 @@
+[
+  {
+    "id": "DB-001",
+    "category": "Core (Elder)",
+    "feature": "Voice-first interface",
+    "description": "Speak instead of typing, in the elder's regional language.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-002",
+    "category": "Core (Elder)",
+    "feature": "Sign up by talking",
+    "description": "Elder picks a language and says their name; no forms.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-003",
+    "category": "Core (Elder)",
+    "feature": "Daily voice check-in",
+    "description": "Five simple questions (feelings, medicines, pain, help, doctor visits) answered by voice or large buttons.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-004",
+    "category": "Core (Elder)",
+    "feature": "Medicine reminders",
+    "description": "Spoken medicine name, time, tablet count; elder taps 'I took it'.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-005",
+    "category": "Core (Elder)",
+    "feature": "Appointment reminders",
+    "description": "Spoken plus large on-screen reminders.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-006",
+    "category": "Core (Elder)",
+    "feature": "Doctor-type suggestion",
+    "description": "On a reported symptom, suggests which type of doctor to see and why. Never diagnoses.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-007",
+    "category": "Core (Elder)",
+    "feature": "Progress reports",
+    "description": "Daily/weekly/monthly; private or shared, chosen by the elder.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-008",
+    "category": "Core (Family)",
+    "feature": "Approved-only family view",
+    "description": "Family sees only items the elder approved.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-009",
+    "category": "Core (Family)",
+    "feature": "Consent-gated alerts",
+    "description": "App asks the elder first, then informs family only if escalation is allowed.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-010",
+    "category": "Core (Family)",
+    "feature": "Family web portal",
+    "description": "Next.js/React portal showing permitted summaries.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-011",
+    "category": "Usability",
+    "feature": "'Hear it again' and 'Slow down' buttons",
+    "description": "Replay and slower speech on any prompt.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-012",
+    "category": "Usability",
+    "feature": "Voice confirmation of important answers",
+    "description": "App reads back key answers for the elder to confirm.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-013",
+    "category": "Medicine",
+    "feature": "Gentle snooze and repeat reminders",
+    "description": "Soft re-prompts when a dose is not confirmed.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-014",
+    "category": "Medicine",
+    "feature": "Medicine stock alert",
+    "description": "Warns when tablets are running low.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-015",
+    "category": "Family",
+    "feature": "Daily 'I'm fine' message",
+    "description": "One-line message to family, sent with the elder's approval.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-016",
+    "category": "Companionship",
+    "feature": "Festival and birthday greetings",
+    "description": "Spoken greetings for festivals and family birthdays.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-017",
+    "category": "Safety",
+    "feature": "Emergency card",
+    "description": "Blood group, allergies, medicines, doctor number.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-018",
+    "category": "Medicine",
+    "feature": "Prescription photo scan",
+    "description": "OCR of prescription; elder must confirm before anything is saved.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-019",
+    "category": "Wellbeing",
+    "feature": "Gentle pattern spotting",
+    "description": "E.g. tiredness reported several days in a row; informational only.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-020",
+    "category": "Medicine",
+    "feature": "Medicine interaction information",
+    "description": "Info only; always advises asking a doctor or pharmacist.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-021",
+    "category": "Companionship",
+    "feature": "Companionship mode",
+    "description": "Music, chat and news.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-022",
+    "category": "Wellbeing",
+    "feature": "Memory games",
+    "description": "Simple recall and attention games.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-023",
+    "category": "Wellbeing",
+    "feature": "Overwhelm/anxiety step-by-step help",
+    "description": "Simple steps to follow when overwhelmed, anxious or scared.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-024",
+    "category": "Family",
+    "feature": "Daily 'call your parents' nudge",
+    "description": "Reminds children to call their parents at least once a day.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-025",
+    "category": "Channels",
+    "feature": "Phone-call (IVR) check-in",
+    "description": "Exotel/Twilio/Knowlarity IVR for check-ins.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-026",
+    "category": "Channels",
+    "feature": "Family alerts via WhatsApp/SMS",
+    "description": "WhatsApp Business API or SMS, consent-gated.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-027",
+    "category": "Elder: Health",
+    "feature": "Fall detection + 'Are you okay?'",
+    "description": "Accelerometer detects a fall; voice prompt; no reply in 60s escalates to pre-approved contacts only.",
+    "phase": "Later",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-028",
+    "category": "Elder: Health",
+    "feature": "Vitals logging by voice",
+    "description": "'BP is 140 over 90' is stored, charted, flagged against doctor-set ranges.",
+    "phase": "Next",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-029",
+    "category": "Elder: Health",
+    "feature": "Bluetooth device sync",
+    "description": "Pulls readings from glucometers, BP monitors, pulse oximeters.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-030",
+    "category": "Elder: Health",
+    "feature": "Hydration, meal and walk nudges",
+    "description": "Adjustable or fully off.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-031",
+    "category": "Elder: Health",
+    "feature": "Sleep and activity summary",
+    "description": "Passive, opt-in only.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-032",
+    "category": "Elder: Health",
+    "feature": "Post-hospital recovery mode",
+    "description": "Daily checklists: wound care, diet, follow-ups.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-033",
+    "category": "Elder: Health",
+    "feature": "Symptom diary",
+    "description": "Spoken notes become a timeline to show the doctor.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-034",
+    "category": "Medicine",
+    "feature": "Pill-box photo verification",
+    "description": "Photo of the day's tablets checked for count and colour against schedule.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-035",
+    "category": "Medicine",
+    "feature": "Generic alternative info",
+    "description": "Suggests asking the pharmacist about generics; information only.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-036",
+    "category": "Medicine",
+    "feature": "Refill and pharmacy integration",
+    "description": "Refills via 1mg, PharmEasy or local pharmacy WhatsApp, elder confirms.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-037",
+    "category": "Medicine",
+    "feature": "'Missed dose' guidance",
+    "description": "Shows the doctor-approved instruction, never improvises.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-038",
+    "category": "Doctor & Records",
+    "feature": "Pre-visit summary",
+    "description": "One-page printable/shareable note: symptoms, vitals, missed doses, questions.",
+    "phase": "Next",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-039",
+    "category": "Doctor & Records",
+    "feature": "Post-visit voice notes",
+    "description": "Elder records doctor's advice; app converts to simple instructions after confirmation.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-040",
+    "category": "Doctor & Records",
+    "feature": "Lab report reader",
+    "description": "Plain-language explanation of values; never diagnoses.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-041",
+    "category": "Doctor & Records",
+    "feature": "Medical records locker",
+    "description": "Prescriptions, reports, scans; voice search ('show my last sugar test').",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-042",
+    "category": "Doctor & Records",
+    "feature": "Teleconsult booking",
+    "description": "One-button join with a doctor or family-doctor network.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-043",
+    "category": "Doctor & Records",
+    "feature": "Vaccination reminders",
+    "description": "Flu, pneumonia, shingles, tetanus boosters.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-044",
+    "category": "Doctor & Records",
+    "feature": "Annual check-up planner",
+    "description": "Eyes, hearing, dental, bone density, cholesterol.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-045",
+    "category": "Emotional & Cognitive",
+    "feature": "Mood trends over time",
+    "description": "With consent, tracks check-in tone/words; alerts counselor or family if low mood persists for weeks.",
+    "phase": "Later",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-046",
+    "category": "Emotional & Cognitive",
+    "feature": "Guided breathing and calming audio",
+    "description": "Short audio with simple on-screen animation.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-047",
+    "category": "Emotional & Cognitive",
+    "feature": "Devotional content",
+    "description": "Bhajans, kirtans, gurbani, namaz times, hymns per the elder's faith.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-048",
+    "category": "Emotional & Cognitive",
+    "feature": "Life-story recorder",
+    "description": "Elder narrates memories, saved as audio for grandchildren.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-049",
+    "category": "Emotional & Cognitive",
+    "feature": "Voice-based cognitive screening",
+    "description": "Periodic recall/orientation tasks; flags change to family and doctor without diagnosing.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-050",
+    "category": "Emotional & Cognitive",
+    "feature": "Adaptive memory games",
+    "description": "Difficulty adjusts over time.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-051",
+    "category": "Emotional & Cognitive",
+    "feature": "Peer community (satsang rooms)",
+    "description": "Moderated voice-based group chats by area or interest.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-052",
+    "category": "Emotional & Cognitive",
+    "feature": "Grandchild connection",
+    "description": "Kids send voice messages/drawings; app reads them aloud.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-053",
+    "category": "Family",
+    "feature": "Multiple caregivers with roles",
+    "description": "Primary caregiver, siblings, doctor, neighbour with distinct permissions; weekly responsibility handover.",
+    "phase": "Next",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-054",
+    "category": "Family",
+    "feature": "Care task board",
+    "description": "Siblings claim tasks (e.g. 'take Dad for check-up Thursday').",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-055",
+    "category": "Family",
+    "feature": "Cost sharing tracker",
+    "description": "Log medical expenses and split between siblings.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-056",
+    "category": "Family",
+    "feature": "Video call from the app",
+    "description": "One tap; auto-answer if elder pre-approves.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-057",
+    "category": "Family",
+    "feature": "Weekly 'good news' digest",
+    "description": "Positive moments (walks, all medicines taken), not only alerts.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-058",
+    "category": "Family",
+    "feature": "Caregiver burnout check",
+    "description": "Prompts the family caregiver about their own wellbeing.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-059",
+    "category": "Family",
+    "feature": "NRI mode",
+    "description": "Time-zone-aware alerts; pay for local help (nurse, driver, groceries).",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-060",
+    "category": "Safety",
+    "feature": "SOS by voice and button",
+    "description": "'Help, help' or big button sends location + emergency card to chosen contacts; optional 112/ambulance call.",
+    "phase": "MVP",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-061",
+    "category": "Safety",
+    "feature": "Nearest hospital and pharmacy finder",
+    "description": "Open-late filter, directions, call button.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-062",
+    "category": "Safety",
+    "feature": "Trusted neighbour contact",
+    "description": "Nearby person who can reach the elder faster than family.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-063",
+    "category": "Safety",
+    "feature": "Scam and fraud protection",
+    "description": "Warnings on bank-call/OTP/lottery scams; 'Never share your OTP'; flag suspicious calls.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-064",
+    "category": "Safety",
+    "feature": "Home safety checklist",
+    "description": "Slippery floors, lighting, grab bars, stair rails.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-065",
+    "category": "Safety",
+    "feature": "Heat, cold and pollution alerts",
+    "description": "Local weather and AQI advice.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-066",
+    "category": "Safety",
+    "feature": "Disaster mode",
+    "description": "Floods/heatwaves: extra check-ins, shelter info.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-067",
+    "category": "Daily Life",
+    "feature": "Voice assistant for small tasks",
+    "description": "Call a contact, read a message, set alarm, find bus/train, pay utility bill.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-068",
+    "category": "Daily Life",
+    "feature": "Helpline directory",
+    "description": "Elder helpline 14567, ambulance, police, local services (editable).",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-069",
+    "category": "Daily Life",
+    "feature": "Government scheme finder",
+    "description": "Ayushman Bharat, pensions, concessions; eligibility and documents.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-070",
+    "category": "Daily Life",
+    "feature": "Document organiser",
+    "description": "Aadhaar, PAN, insurance, pension papers with expiry reminders.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-071",
+    "category": "Daily Life",
+    "feature": "Insurance helper",
+    "description": "Renewal dates and claim steps.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-072",
+    "category": "Daily Life",
+    "feature": "Digital literacy coach",
+    "description": "Short lessons: video call, reading a bank SMS safely.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-073",
+    "category": "Daily Life",
+    "feature": "Newspaper read-aloud",
+    "description": "Local-language headlines and 'today in history'.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-074",
+    "category": "Platform",
+    "feature": "Offline mode",
+    "description": "Reminders and basic voice work with poor connectivity.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-075",
+    "category": "Platform",
+    "feature": "Dialect and accent support",
+    "description": "Test with real elders (Telangana, Vidarbha, Bhojpuri belts).",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-076",
+    "category": "Platform",
+    "feature": "Low-end phone optimization",
+    "description": "Light on RAM and data.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-077",
+    "category": "Platform",
+    "feature": "Hearing and vision adaptations",
+    "description": "Captions, high contrast, adjustable speed, vibration + flash alerts.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-078",
+    "category": "Platform",
+    "feature": "Smart speaker and wearable support",
+    "description": "Alexa, Google Nest, basic smartwatch.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-079",
+    "category": "Platform",
+    "feature": "Feature phone / IVR as primary channel",
+    "description": "For elders without smartphones.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-080",
+    "category": "Platform",
+    "feature": "Caregiver-assisted setup",
+    "description": "Child configures remotely; elder approves every sharing setting by voice.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-081",
+    "category": "Privacy & Trust",
+    "feature": "Plain-language consent log",
+    "description": "'Who saw what, and when?' answered by voice.",
+    "phase": "MVP",
+    "priority_star": "Y",
+    "source": "Added"
+  },
+  {
+    "id": "DB-082",
+    "category": "Privacy & Trust",
+    "feature": "Easy revoke",
+    "description": "'Stop sharing my mood with my son' in one sentence.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-083",
+    "category": "Privacy & Trust",
+    "feature": "Temporary sharing",
+    "description": "E.g. share reports with the doctor for 7 days.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-084",
+    "category": "Privacy & Trust",
+    "feature": "Nominee / incapacity handling",
+    "description": "Auditable process with doctor or legal guardian if elder cannot consent.",
+    "phase": "Later",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-085",
+    "category": "Privacy & Trust",
+    "feature": "Data export and delete",
+    "description": "DPDP Act 2023 compliance.",
+    "phase": "Next",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-086",
+    "category": "Privacy & Trust",
+    "feature": "Security baseline",
+    "description": "Encryption, OTP login, audit trail, Indian cloud region, row-level security.",
+    "phase": "MVP",
+    "priority_star": "",
+    "source": "Original doc"
+  },
+  {
+    "id": "DB-087",
+    "category": "Business",
+    "feature": "B2B2C partnerships",
+    "description": "Hospitals, insurers, pharmacies, old-age homes, corporate benefits.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-088",
+    "category": "Business",
+    "feature": "Community health worker mode",
+    "description": "ASHA/ANM check-ins in rural areas, with consent.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-089",
+    "category": "Business",
+    "feature": "Anonymous aggregate insights",
+    "description": "De-identified population trends for NGOs/government.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  },
+  {
+    "id": "DB-090",
+    "category": "Business",
+    "feature": "Tiered pricing",
+    "description": "Free basic tier; paid family and care-team features.",
+    "phase": "Scale",
+    "priority_star": "",
+    "source": "Added"
+  }
+]

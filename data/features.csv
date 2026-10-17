@@ -1,0 +1,91 @@
+id,category,feature,description,phase,priority_star,source
+DB-001,Core (Elder),Voice-first interface,"Speak instead of typing, in the elder's regional language.",MVP,,Original doc
+DB-002,Core (Elder),Sign up by talking,Elder picks a language and says their name; no forms.,MVP,,Original doc
+DB-003,Core (Elder),Daily voice check-in,"Five simple questions (feelings, medicines, pain, help, doctor visits) answered by voice or large buttons.",MVP,,Original doc
+DB-004,Core (Elder),Medicine reminders,"Spoken medicine name, time, tablet count; elder taps 'I took it'.",MVP,,Original doc
+DB-005,Core (Elder),Appointment reminders,Spoken plus large on-screen reminders.,MVP,,Original doc
+DB-006,Core (Elder),Doctor-type suggestion,"On a reported symptom, suggests which type of doctor to see and why. Never diagnoses.",Next,,Original doc
+DB-007,Core (Elder),Progress reports,"Daily/weekly/monthly; private or shared, chosen by the elder.",Next,,Original doc
+DB-008,Core (Family),Approved-only family view,Family sees only items the elder approved.,MVP,,Original doc
+DB-009,Core (Family),Consent-gated alerts,"App asks the elder first, then informs family only if escalation is allowed.",MVP,,Original doc
+DB-010,Core (Family),Family web portal,Next.js/React portal showing permitted summaries.,Next,,Original doc
+DB-011,Usability,'Hear it again' and 'Slow down' buttons,Replay and slower speech on any prompt.,MVP,,Original doc
+DB-012,Usability,Voice confirmation of important answers,App reads back key answers for the elder to confirm.,MVP,,Original doc
+DB-013,Medicine,Gentle snooze and repeat reminders,Soft re-prompts when a dose is not confirmed.,MVP,,Original doc
+DB-014,Medicine,Medicine stock alert,Warns when tablets are running low.,Next,,Original doc
+DB-015,Family,Daily 'I'm fine' message,"One-line message to family, sent with the elder's approval.",MVP,,Original doc
+DB-016,Companionship,Festival and birthday greetings,Spoken greetings for festivals and family birthdays.,Next,,Original doc
+DB-017,Safety,Emergency card,"Blood group, allergies, medicines, doctor number.",MVP,,Original doc
+DB-018,Medicine,Prescription photo scan,OCR of prescription; elder must confirm before anything is saved.,Next,,Original doc
+DB-019,Wellbeing,Gentle pattern spotting,E.g. tiredness reported several days in a row; informational only.,Later,,Original doc
+DB-020,Medicine,Medicine interaction information,Info only; always advises asking a doctor or pharmacist.,Later,,Original doc
+DB-021,Companionship,Companionship mode,"Music, chat and news.",Next,,Original doc
+DB-022,Wellbeing,Memory games,Simple recall and attention games.,Later,,Original doc
+DB-023,Wellbeing,Overwhelm/anxiety step-by-step help,"Simple steps to follow when overwhelmed, anxious or scared.",Next,,Original doc
+DB-024,Family,Daily 'call your parents' nudge,Reminds children to call their parents at least once a day.,Next,,Original doc
+DB-025,Channels,Phone-call (IVR) check-in,Exotel/Twilio/Knowlarity IVR for check-ins.,Next,,Original doc
+DB-026,Channels,Family alerts via WhatsApp/SMS,"WhatsApp Business API or SMS, consent-gated.",Next,,Original doc
+DB-027,Elder: Health,Fall detection + 'Are you okay?',Accelerometer detects a fall; voice prompt; no reply in 60s escalates to pre-approved contacts only.,Later,Y,Added
+DB-028,Elder: Health,Vitals logging by voice,"'BP is 140 over 90' is stored, charted, flagged against doctor-set ranges.",Next,Y,Added
+DB-029,Elder: Health,Bluetooth device sync,"Pulls readings from glucometers, BP monitors, pulse oximeters.",Scale,,Added
+DB-030,Elder: Health,"Hydration, meal and walk nudges",Adjustable or fully off.,Later,,Added
+DB-031,Elder: Health,Sleep and activity summary,"Passive, opt-in only.",Later,,Added
+DB-032,Elder: Health,Post-hospital recovery mode,"Daily checklists: wound care, diet, follow-ups.",Later,,Added
+DB-033,Elder: Health,Symptom diary,Spoken notes become a timeline to show the doctor.,Next,,Added
+DB-034,Medicine,Pill-box photo verification,Photo of the day's tablets checked for count and colour against schedule.,Later,,Added
+DB-035,Medicine,Generic alternative info,Suggests asking the pharmacist about generics; information only.,Later,,Added
+DB-036,Medicine,Refill and pharmacy integration,"Refills via 1mg, PharmEasy or local pharmacy WhatsApp, elder confirms.",Later,,Added
+DB-037,Medicine,'Missed dose' guidance,"Shows the doctor-approved instruction, never improvises.",Next,,Added
+DB-038,Doctor & Records,Pre-visit summary,"One-page printable/shareable note: symptoms, vitals, missed doses, questions.",Next,Y,Added
+DB-039,Doctor & Records,Post-visit voice notes,Elder records doctor's advice; app converts to simple instructions after confirmation.,Later,,Added
+DB-040,Doctor & Records,Lab report reader,Plain-language explanation of values; never diagnoses.,Later,,Added
+DB-041,Doctor & Records,Medical records locker,"Prescriptions, reports, scans; voice search ('show my last sugar test').",Later,,Added
+DB-042,Doctor & Records,Teleconsult booking,One-button join with a doctor or family-doctor network.,Scale,,Added
+DB-043,Doctor & Records,Vaccination reminders,"Flu, pneumonia, shingles, tetanus boosters.",Later,,Added
+DB-044,Doctor & Records,Annual check-up planner,"Eyes, hearing, dental, bone density, cholesterol.",Later,,Added
+DB-045,Emotional & Cognitive,Mood trends over time,"With consent, tracks check-in tone/words; alerts counselor or family if low mood persists for weeks.",Later,Y,Added
+DB-046,Emotional & Cognitive,Guided breathing and calming audio,Short audio with simple on-screen animation.,Next,,Added
+DB-047,Emotional & Cognitive,Devotional content,"Bhajans, kirtans, gurbani, namaz times, hymns per the elder's faith.",Later,,Added
+DB-048,Emotional & Cognitive,Life-story recorder,"Elder narrates memories, saved as audio for grandchildren.",Later,,Added
+DB-049,Emotional & Cognitive,Voice-based cognitive screening,Periodic recall/orientation tasks; flags change to family and doctor without diagnosing.,Later,,Added
+DB-050,Emotional & Cognitive,Adaptive memory games,Difficulty adjusts over time.,Later,,Added
+DB-051,Emotional & Cognitive,Peer community (satsang rooms),Moderated voice-based group chats by area or interest.,Scale,,Added
+DB-052,Emotional & Cognitive,Grandchild connection,Kids send voice messages/drawings; app reads them aloud.,Later,,Added
+DB-053,Family,Multiple caregivers with roles,"Primary caregiver, siblings, doctor, neighbour with distinct permissions; weekly responsibility handover.",Next,Y,Added
+DB-054,Family,Care task board,Siblings claim tasks (e.g. 'take Dad for check-up Thursday').,Next,,Added
+DB-055,Family,Cost sharing tracker,Log medical expenses and split between siblings.,Later,,Added
+DB-056,Family,Video call from the app,One tap; auto-answer if elder pre-approves.,Later,,Added
+DB-057,Family,Weekly 'good news' digest,"Positive moments (walks, all medicines taken), not only alerts.",Next,,Added
+DB-058,Family,Caregiver burnout check,Prompts the family caregiver about their own wellbeing.,Later,,Added
+DB-059,Family,NRI mode,"Time-zone-aware alerts; pay for local help (nurse, driver, groceries).",Scale,,Added
+DB-060,Safety,SOS by voice and button,"'Help, help' or big button sends location + emergency card to chosen contacts; optional 112/ambulance call.",MVP,Y,Added
+DB-061,Safety,Nearest hospital and pharmacy finder,"Open-late filter, directions, call button.",Later,,Added
+DB-062,Safety,Trusted neighbour contact,Nearby person who can reach the elder faster than family.,Next,,Added
+DB-063,Safety,Scam and fraud protection,Warnings on bank-call/OTP/lottery scams; 'Never share your OTP'; flag suspicious calls.,Later,,Added
+DB-064,Safety,Home safety checklist,"Slippery floors, lighting, grab bars, stair rails.",Later,,Added
+DB-065,Safety,"Heat, cold and pollution alerts",Local weather and AQI advice.,Later,,Added
+DB-066,Safety,Disaster mode,"Floods/heatwaves: extra check-ins, shelter info.",Scale,,Added
+DB-067,Daily Life,Voice assistant for small tasks,"Call a contact, read a message, set alarm, find bus/train, pay utility bill.",Later,,Added
+DB-068,Daily Life,Helpline directory,"Elder helpline 14567, ambulance, police, local services (editable).",Next,,Added
+DB-069,Daily Life,Government scheme finder,"Ayushman Bharat, pensions, concessions; eligibility and documents.",Later,,Added
+DB-070,Daily Life,Document organiser,"Aadhaar, PAN, insurance, pension papers with expiry reminders.",Later,,Added
+DB-071,Daily Life,Insurance helper,Renewal dates and claim steps.,Later,,Added
+DB-072,Daily Life,Digital literacy coach,"Short lessons: video call, reading a bank SMS safely.",Later,,Added
+DB-073,Daily Life,Newspaper read-aloud,Local-language headlines and 'today in history'.,Later,,Added
+DB-074,Platform,Offline mode,Reminders and basic voice work with poor connectivity.,Next,,Added
+DB-075,Platform,Dialect and accent support,"Test with real elders (Telangana, Vidarbha, Bhojpuri belts).",Next,,Added
+DB-076,Platform,Low-end phone optimization,Light on RAM and data.,Next,,Added
+DB-077,Platform,Hearing and vision adaptations,"Captions, high contrast, adjustable speed, vibration + flash alerts.",MVP,,Added
+DB-078,Platform,Smart speaker and wearable support,"Alexa, Google Nest, basic smartwatch.",Scale,,Added
+DB-079,Platform,Feature phone / IVR as primary channel,For elders without smartphones.,Next,,Added
+DB-080,Platform,Caregiver-assisted setup,Child configures remotely; elder approves every sharing setting by voice.,Next,,Added
+DB-081,Privacy & Trust,Plain-language consent log,"'Who saw what, and when?' answered by voice.",MVP,Y,Added
+DB-082,Privacy & Trust,Easy revoke,'Stop sharing my mood with my son' in one sentence.,MVP,,Added
+DB-083,Privacy & Trust,Temporary sharing,E.g. share reports with the doctor for 7 days.,Next,,Added
+DB-084,Privacy & Trust,Nominee / incapacity handling,Auditable process with doctor or legal guardian if elder cannot consent.,Later,,Added
+DB-085,Privacy & Trust,Data export and delete,DPDP Act 2023 compliance.,Next,,Added
+DB-086,Privacy & Trust,Security baseline,"Encryption, OTP login, audit trail, Indian cloud region, row-level security.",MVP,,Original doc
+DB-087,Business,B2B2C partnerships,"Hospitals, insurers, pharmacies, old-age homes, corporate benefits.",Scale,,Added
+DB-088,Business,Community health worker mode,"ASHA/ANM check-ins in rural areas, with consent.",Scale,,Added
+DB-089,Business,Anonymous aggregate insights,De-identified population trends for NGOs/government.,Scale,,Added
+DB-090,Business,Tiered pricing,Free basic tier; paid family and care-team features.,Scale,,Added
