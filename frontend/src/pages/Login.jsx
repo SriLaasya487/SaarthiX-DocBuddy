@@ -41,24 +41,31 @@ export default function Login({ onDone }) {
 
   return (
     <main className="center">
-      <h1 className="brand">AarogyaSaathi</h1>
-      <p className="lede">Your care companion. You decide who sees what.</p>
-
-      {step === "who" && (
-        <section className="stack">
-          {isDemo && <>
-            <p className="note">Live demo with sample data. Pick a view:</p>
-            <button className="big ok" onClick={() => { setToken("demo-elder"); onDone({}); }}>▶ Try the demo as Sarala (senior, 72)</button>
-            <button className="big ok" onClick={() => { setToken("demo-family"); onDone({}); }}>▶ Try the demo as Rohan (her son)</button>
-            <button className="big ok" onClick={() => { setToken("demo-chw"); onDone({}); }}>▶ Try the demo as Meena (ASHA worker)</button>
-            <hr style={{ width: "100%" }} />
-          </>}
-          <button className="big primary" onClick={() => { setRole("elder"); setStep("lang"); speak("Please choose your language", "en-IN"); }}>I am the senior</button>
-          <button className="big" onClick={() => { setRole("family"); setStep("phone"); }}>I am family or a doctor</button>
-          <button className="big" onClick={() => { setRole("chw"); setStep("phone"); }}>I am a health worker (ASHA / nurse)</button>
-          <button className="big" onClick={() => { setRole("partner"); setStep("phone"); }}>I represent an organisation</button>
-        </section>
-      )}
+      {step === "who" ? (
+        <>
+          <div className="hero">
+            <p style={{ fontSize: "3rem", margin: 0 }} aria-hidden>🪔</p>
+            <h1 className="brand">AarogyaSaathi</h1>
+            <p className="deva">आरोग्य साथी · आपका अपना देखभाल साथी</p>
+            <p className="lede">A caring companion for seniors and the families who love them.</p>
+          </div>
+          <div className="trust">
+            <p><span aria-hidden>🗣️</span>Speak in your own language. Big buttons, no typing needed.</p>
+            <p><span aria-hidden>🔐</span>You decide who sees what. You can stop any time.</p>
+            <p><span aria-hidden>🛟</span>Medicine reminders, a safety button, and a daily hello for your family.</p>
+          </div>
+          <section className="stack">
+            <button className="big primary" onClick={() => { setRole("elder"); setStep("lang"); speak("Please choose your language", "en-IN"); }}>I am a senior</button>
+            <button className="big" onClick={() => { setRole("family"); setStep("phone"); }}>I am family or a doctor</button>
+            <button className="big" onClick={() => { setRole("chw"); setStep("phone"); }}>I am a health worker (ASHA / nurse)</button>
+            <button className="big" onClick={() => { setRole("partner"); setStep("phone"); }}>I represent an organisation</button>
+          </section>
+          {isDemo && <p className="sample">Just looking around? Open a sample home as
+            <button onClick={() => { setToken("demo-elder"); onDone({}); }}>a senior</button>·
+            <button onClick={() => { setToken("demo-family"); onDone({}); }}>a family member</button>·
+            <button onClick={() => { setToken("demo-chw"); onDone({}); }}>a health worker</button></p>}
+        </>
+      ) : <h1 className="brand" style={{ fontSize: "2rem" }}>AarogyaSaathi</h1>}
 
       {step === "lang" && (
         <section className="stack">
