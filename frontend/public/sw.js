@@ -23,3 +23,4 @@ self.addEventListener("fetch", (e) => {
       .catch(() => caches.match(e.request).then((m) => m || caches.match(BASE)))
   );
 });
+
