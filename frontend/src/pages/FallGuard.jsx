@@ -15,7 +15,8 @@ export default function FallGuard({ lang }) {
       if (g > 3.2 && Date.now() - last.current > 30000) { last.current = Date.now(); trigger(); }
     };
     window.addEventListener("devicemotion", onMotion);
-    return () => window.removeEventListener("devicemotion", onMotion);
+    window.addEventListener("db-sim-fall", trigger);
+    return () => { window.removeEventListener("devicemotion", onMotion); window.removeEventListener("db-sim-fall", trigger); };
   }, []);
 
   const trigger = async () => {
