@@ -1,11 +1,11 @@
 :root {
-  --ink: #14313B; --paper: #F2F6F5; --card: #FFFFFF; --line: #C9D8D6;
-  --saffron: #F2A900; --sos: #C62828; --ok: #1F7A4D; --muted: #4B6168;
+  --ink: #3A2A1F; --paper: #FBF5EA; --card: #FFFDF8; --line: #E6D8C0;
+  --saffron: #F0A81C; --sos: #C62828; --ok: #3C7A4F; --muted: #6B5748; --clay: #C4572F;
   font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 20px; line-height: 1.5;
 }
 :root { color-scheme: light dark; }
 @media (prefers-color-scheme: dark) {
-  :root { --ink: #E7F1EF; --paper: #0F2128; --card: #17313A; --line: #2D4A53; --muted: #A9C0C5; }
+  :root { --ink: #F6EBDD; --paper: #231A14; --card: #2E231B; --line: #4A3A2E; --muted: #CDB9A5; }
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); }
@@ -18,7 +18,7 @@ h1 { font-size: 2rem; margin: .5rem 0 1rem; } h2 { font-size: 1.5rem; margin: .5
 .shell { max-width: 36rem; margin: 0 auto; min-height: 100vh; padding-bottom: 7rem; }
 .shell.wide { max-width: 64rem; }
 .bar { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .75rem 1rem; background: var(--ink); color: var(--paper); }
-@media (prefers-color-scheme: dark) { .bar { background: #0A171C; color: #E7F1EF; } }
+@media (prefers-color-scheme: dark) { .bar { background: #1B130E; color: #F6EBDD; } }
 .tools { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
 .tools button { background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 8px; padding: .35rem .7rem; font-size: .85rem; cursor: pointer; }
 .page { padding: 1rem; }
@@ -77,3 +77,30 @@ input, textarea { padding: .7rem; border: 2px solid var(--ink); border-radius: 1
 select { padding: .7rem; border: 2px solid var(--ink); border-radius: 10px; background: var(--card); color: var(--ink); font: inherit; }
 .chk { flex-direction: row; align-items: center; gap: .6rem; } .chk input { width: 1.4rem; height: 1.4rem; }
 pre.note { white-space: pre-wrap; }
+
+/* ---- warm, homely theme ---- */
+body { font-family: "Atkinson Hyperlegible", system-ui, sans-serif; }
+h1, h2, .brand, .logo { font-family: "Fraunces", Georgia, serif; font-weight: 700; }
+.bar { background: var(--paper); color: var(--ink); border-bottom: 2px solid var(--line); }
+.logo { font-size: 1.25rem; }
+.tools button { border-color: var(--line); background: var(--card); }
+.card { border-radius: 18px; box-shadow: 0 2px 0 var(--line); }
+.big { border-radius: 16px; border-width: 2px; box-shadow: 0 3px 0 var(--line); }
+.big.primary { background: var(--saffron); border-color: #D18F0E; box-shadow: 0 3px 0 #D18F0E; }
+.big.ok { background: var(--ok); border-color: #2E5F3E; box-shadow: 0 3px 0 #2E5F3E; }
+.sos { box-shadow: 0 4px 0 #8E1A1A, 0 8px 18px rgba(0,0,0,.25); }
+.hero { text-align: center; padding: 1.2rem 0 .6rem; }
+.hero .brand { margin: .2rem 0; color: var(--clay); }
+.hero .deva { font-size: 1.15rem; color: var(--muted); margin: 0 0 .3rem; }
+.trust { display: flex; flex-direction: column; gap: .5rem; margin: .8rem 0 1.2rem; }
+.trust p { display: flex; gap: .7rem; align-items: center; margin: 0; background: var(--card); border: 2px solid var(--line); border-radius: 14px; padding: .6rem .9rem; font-size: .95rem; }
+.trust span { font-size: 1.5rem; }
+.sample { margin-top: 1.5rem; text-align: center; color: var(--muted); font-size: .9rem; }
+.sample button { background: none; border: 0; color: var(--clay); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; margin: 0 .3rem; }
+.greet { margin: .2rem 0 0; } .today { color: var(--muted); margin: 0 0 1rem; }
+.tiles.small { grid-template-columns: 1fr 1fr; gap: .8rem; }
+.tiles.small .tile { aspect-ratio: auto; min-height: 7.2rem; border-width: 2px; border-radius: 20px; font-size: 1.05rem; box-shadow: 0 3px 0 var(--line); border-color: var(--line); }
+.tiles.small .tile .ico { font-size: 2.2rem; background: #F7E2B8; border-radius: 50%; width: 3.4rem; height: 3.4rem; display: grid; place-items: center; }
+.tiles.small .tile:nth-child(4n+2) .ico { background: #F3D3C4; } .tiles.small .tile:nth-child(4n+3) .ico { background: #D5E6D3; } .tiles.small .tile:nth-child(4n) .ico { background: #E4DAF0; }
+.due { border-radius: 18px; box-shadow: 0 3px 0 #D18F0E; }
+.foot { text-align: center; color: var(--muted); font-size: .8rem; padding: 1rem; }
