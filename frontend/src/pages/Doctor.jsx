@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api } from "../api.js";
+import { t as tr } from "../i18n.js";
 import { canListen, listen, speak } from "../voice.js";
 
 export default function Doctor({ lang }) {
@@ -15,11 +16,11 @@ export default function Doctor({ lang }) {
 
   return (
     <section className="stack">
-      <h2>Which doctor should I meet?</h2>
-      <p>Tell me what is bothering you.</p>
-      {canListen() && <button className="big mic" onClick={byVoice}>🎤 Speak</button>}
-      <label>Or type here<textarea rows="3" value={text} onChange={(e) => setText(e.target.value)} /></label>
-      <button className="big primary" disabled={!text} onClick={() => ask()}>Suggest a doctor</button>
+      <h2>{tr("Which doctor should I meet?", lang)}</h2>
+      <p>{tr("Tell me what is bothering you.", lang)}</p>
+      {canListen() && <button className="big mic" onClick={byVoice}>{tr("🎤 Speak", lang)}</button>}
+      <label>{tr("Or type here", lang)}<textarea rows="3" value={text} onChange={(e) => setText(e.target.value)} /></label>
+      <button className="big primary" disabled={!text} onClick={() => ask()}>{tr("Suggest a doctor", lang)}</button>
       {res && (
         <div className="card">
           <h3>{res.doctor}</h3>

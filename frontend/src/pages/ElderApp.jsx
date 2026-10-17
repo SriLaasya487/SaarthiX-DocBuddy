@@ -5,6 +5,7 @@ import { pendingCount, scheduleDoseAlarms } from "../offline.js";
 import { t as tr } from "../i18n.js";
 import { canListen, hearAgain, listen, loadLexicon, slowDown, speak, voiceNav } from "../voice.js";
 import CheckIn from "./CheckIn.jsx";
+import Welcome from "./Welcome.jsx";
 import Medicines from "./Medicines.jsx";
 import Doctor from "./Doctor.jsx";
 import Sharing from "./Sharing.jsx";
@@ -37,6 +38,7 @@ export default function ElderApp({ user: u0, onLogout }) {
   const [alarm, setAlarm] = useState(null);
   const [fine, setFine] = useState(null);
   const [more, setMore] = useState(false);
+  const [tour, setTour] = useState(!localStorage.getItem("db_tour"));
   const lang = user.language;
 
   useEffect(() => { applySettings(u0.settings || {}); loadLexicon(api.get); syncNow(); }, []);
@@ -56,6 +58,7 @@ export default function ElderApp({ user: u0, onLogout }) {
   }, [view, !!home, due.length]);
 
   const go = (v) => setView(v);
+  const bump = (d) => { let s = {}; try { s = JSON.parse(localStorage.getItem("db_a11y")) || {}; } catch { /* none */ } s.font_scale = Math.min(2, Math.max(1, +((s.font_scale || 1) + d).toFixed(1))); applySettings(s); api.put("/settings", { font_scale: s.font_scale }).catch(() => {}); };
   const Back = () => <button className="back" onClick={() => go("home")}>← Home</button>;
   const sayFine = async () => { const d = await api.post("/imfine"); setFine(d); speak(d.speak, lang); };
 
@@ -69,13 +72,12 @@ export default function ElderApp({ user: u0, onLogout }) {
 
   return (
     <div className="shell">
+      {tour && <Welcome lang={lang} onDone={() => { localStorage.setItem("db_tour", "1"); setTour(false); }} />}
       <header className="bar">
         <strong className="logo">🪔 AarogyaSaathi</strong>
         <span className="tools">
-          <button aria-label="Hear it again" onClick={hearAgain}>🔊 {tr("Hear again", lang)}</button>
-          <button aria-label="Slow down" onClick={slowDown}>🐢 {tr("Slow down", lang)}</button>
-          {canListen() && <button aria-label="Say where to go" onClick={voiceGo}>🎤 {tr("Go to…", lang)}</button>}
-          {isDemo && <button onClick={() => window.dispatchEvent(new Event("db-sim-fall"))}>⚠ Simulate fall</button>}
+          <button aria-label="Smaller text" onClick={() => bump(-0.1)}>A−</button>
+          <button aria-label="Bigger text" onClick={() => bump(0.1)}><b>A+</b></button>
           <button onClick={onLogout}>{tr("Sign out", lang)}</button>
         </span>
       </header>
@@ -94,6 +96,13 @@ export default function ElderApp({ user: u0, onLogout }) {
           <>
             <h1 className="greet">{tr("Namaste", lang)}, {user.name || "friend"} 🙏</h1>
             <p className="today">{new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}</p>
+            <div className="chips">
+              <button onClick={hearAgain}>🔊 {tr("Hear again", lang)}</button>
+              <button onClick={slowDown}>🐢 {tr("Slow down", lang)}</button>
+              {canListen() && <button onClick={voiceGo}>🎤 {tr("Go to…", lang)}</button>}
+              {isDemo && <button onClick={() => window.dispatchEvent(new Event("db-sim-fall"))}>⚠ Simulate fall</button>}
+            </div>
+            {home && !(home.medicines || []).length && <button className="due" onClick={() => go("meds")}>➕ {tr("Add your first medicine", lang)} →</button>}
             {due.length > 0 && <button className="due" onClick={() => go("meds")}>Medicine time: {due[0].name}{due.length > 1 ? ` and ${due.length - 1} more` : ""} →</button>}
             {(home?.appointments || []).map((a) => <button className="due" key={a.id} onClick={() => go("health")}>{a.speak}</button>)}
             {(home?.reminders || []).map((r, i) => <div className="card good" key={i}><p>🎉 {r.say}</p></div>)}

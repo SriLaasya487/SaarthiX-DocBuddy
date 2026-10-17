@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
+import { t as tr } from "../i18n.js";
 import { canListen, listen, speak } from "../voice.js";
 
 const ROLES = [["primary", "Main caregiver"], ["sibling", "Another family member"], ["doctor", "Doctor"], ["neighbour", "Trusted neighbour (reached first in an emergency)"],
@@ -39,14 +40,14 @@ export default function Sharing({ lang }) {
 
   return (
     <section className="stack">
-      <h2>Who can see what</h2>
-      <p>You decide. Nothing is shared unless you say Yes.</p>
+      <h2>{tr("Who can see what", lang)}</h2>
+      <p>{tr("You decide. Nothing is shared unless you say Yes.", lang)}</p>
       {msg && <p className="note" role="status">{msg}</p>}
 
       <div className="card stack">
-        <h3>Share with someone</h3>
-        <label>Their name<input value={who.name} onChange={(e) => setWho({ ...who, name: e.target.value })} /></label>
-        <label>Their mobile number<input value={who.phone} onChange={(e) => setWho({ ...who, phone: e.target.value })} inputMode="tel" /></label>
+        <h3>{tr("Share with someone", lang)}</h3>
+        <label>{tr("Their name", lang)}<input value={who.name} onChange={(e) => setWho({ ...who, name: e.target.value })} /></label>
+        <label>{tr("Their mobile number", lang)}<input value={who.phone} onChange={(e) => setWho({ ...who, phone: e.target.value })} inputMode="tel" /></label>
         <label>What do you call them? (son, daughter, doctor…)<input value={who.relation} onChange={(e) => setWho({ ...who, relation: e.target.value })} /></label>
         <label>For how many days? (empty = until I stop)<input type="number" min="1" value={days} onChange={(e) => setDays(e.target.value)} /></label>
         {who.phone && <>
@@ -62,16 +63,16 @@ export default function Sharing({ lang }) {
         </>}
       </div>
 
-      <h3>Currently shared</h3>
-      {grants.length === 0 && <p className="note">You are sharing nothing.</p>}
+      <h3>{tr("Currently shared", lang)}</h3>
+      {grants.length === 0 && <p className="note">{tr("You are sharing nothing.", lang)}</p>}
       {grants.map((g) => (
         <div className="row" key={g.id}>
           <span>{g.grantee}{g.relation ? ` (${g.relation})` : ""}: {types[g.data_type] || g.data_type}{g.scope !== "view" ? ` · ${g.scope}` : ""}{g.expires_at ? " · temporary" : ""}</span>
-          <button className="stop" onClick={() => revoke(g.id)}>Stop</button>
+          <button className="stop" onClick={() => revoke(g.id)}>{tr("Stop", lang)}</button>
         </div>
       ))}
-      {canListen() && <button className="big mic" onClick={stopByVoice}>🎤 Stop sharing by voice</button>}
-      <button className="big" onClick={whoSaw}>🔊 Who saw my information?</button>
+      {canListen() && <button className="big mic" onClick={stopByVoice}>{tr("🎤 Stop sharing by voice", lang)}</button>}
+      <button className="big" onClick={whoSaw}>{tr("🔊 Who saw my information?", lang)}</button>
       {log.map((l, i) => <p className="note" key={i}>{l}</p>)}
     </section>
   );

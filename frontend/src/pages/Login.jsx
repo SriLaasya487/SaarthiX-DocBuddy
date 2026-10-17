@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { api, setToken, isDemo } from "../api.js";
 import { t as tr } from "../i18n.js";
-import { LANGUAGES, canListen, listen, parseDigits, speak } from "../voice.js";
+import { LANGUAGES, SUPPORTED, canListen, listen, parseDigits, speak } from "../voice.js";
 
 export default function Login({ onDone }) {
   const [step, setStep] = useState("who");
@@ -73,12 +73,12 @@ export default function Login({ onDone }) {
         <section className="stack">
           <h2>Choose your language · अपनी भाषा चुनिए · మీ భాష ఎంచుకోండి</h2>
           <div className="grid2">
-            {LANGUAGES.map((l) => (
+            {LANGUAGES.filter((l) => SUPPORTED.includes(l.code)).map((l) => (
               <button key={l.code} className={"big " + (lang === l.code ? "primary" : "")} onClick={() => { setLang(l.code); speak(l.label, l.code); }}>{l.label}</button>
             ))}
           </div>
           <button className="big primary" onClick={() => setStep("phone")}>{tr("Next", lang)}</button>
-          {canListen() && <button className="big mic" onClick={talk}>🎤 Sign up by talking</button>}
+          
         </section>
       )}
 
