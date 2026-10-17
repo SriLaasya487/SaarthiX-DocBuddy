@@ -21,10 +21,10 @@ const Community = lazy(() => import("./Community.jsx"));
 const Settings = lazy(() => import("./Settings.jsx"));
 
 const TILES = [
-  { id: "checkin", label: "Daily check-in", icon: "☺" }, { id: "meds", label: "My medicines", icon: "✚" }, { id: "health", label: "BP, sugar & visits", icon: "♡" },
-  { id: "records", label: "My records", icon: "▤" }, { id: "doctor", label: "Which doctor?", icon: "☎" }, { id: "companion", label: "Companion", icon: "✿" },
-  { id: "assistant", label: "Ask AarogyaSaathi", icon: "🎤" }, { id: "safety", label: "Staying safe", icon: "⛨" }, { id: "daily", label: "Learn & benefits", icon: "✎" },
-  { id: "community", label: "Friends", icon: "☻" }, { id: "sharing", label: "Who can see what", icon: "⚿" }, { id: "settings", label: "Settings", icon: "⚙" },
+  { id: "checkin", label: "Daily check-in", icon: "😊" }, { id: "meds", label: "My medicines", icon: "💊" }, { id: "health", label: "BP, sugar & visits", icon: "❤️" },
+  { id: "records", label: "My records", icon: "📁" }, { id: "doctor", label: "Which doctor?", icon: "🩺" }, { id: "companion", label: "Companion", icon: "🌼" },
+  { id: "assistant", label: "Ask AarogyaSaathi", icon: "💬" }, { id: "safety", label: "Staying safe", icon: "🛡️" }, { id: "daily", label: "Learn & benefits", icon: "📖" },
+  { id: "community", label: "Friends", icon: "👥" }, { id: "sharing", label: "Who can see what", icon: "🔐" }, { id: "settings", label: "Settings", icon: "⚙️" },
 ];
 
 export default function ElderApp({ user: u0, onLogout }) {
@@ -65,7 +65,7 @@ export default function ElderApp({ user: u0, onLogout }) {
   return (
     <div className="shell">
       <header className="bar">
-        <strong>AarogyaSaathi</strong>
+        <strong className="logo">🪔 AarogyaSaathi</strong>
         <span className="tools">
           <button aria-label="Hear it again" onClick={hearAgain}>🔊 Hear again</button>
           <button aria-label="Slow down" onClick={slowDown}>🐢 Slow down</button>
@@ -74,7 +74,6 @@ export default function ElderApp({ user: u0, onLogout }) {
           <button onClick={onLogout}>Sign out</button>
         </span>
       </header>
-      {isDemo && <p className="note" style={{ padding: "0 1rem" }}>Demo mode: sample data, nothing is stored.</p>}
       {queued > 0 && <p className="note" style={{ padding: "0 1rem" }}>{queued} item(s) saved on this phone, waiting for the network.</p>}
       {home?.disaster && <p className="warn" style={{ padding: "0 1rem" }}><b>Extra safety mode is on.</b> <button className="back" onClick={() => go("safety")}>See what to do</button></p>}
 
@@ -88,7 +87,8 @@ export default function ElderApp({ user: u0, onLogout }) {
       <main className="page">
         {view === "home" && (
           <>
-            <h1>Namaste, {user.name || "friend"}</h1>
+            <h1 className="greet">Namaste, {user.name || "friend"} 🙏</h1>
+            <p className="today">{new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}</p>
             {due.length > 0 && <button className="due" onClick={() => go("meds")}>Medicine time: {due[0].name}{due.length > 1 ? ` and ${due.length - 1} more` : ""} →</button>}
             {(home?.appointments || []).map((a) => <button className="due" key={a.id} onClick={() => go("health")}>{a.speak}</button>)}
             {(home?.reminders || []).map((r, i) => <div className="card good" key={i}><p>🎉 {r.say}</p></div>)}
@@ -119,6 +119,7 @@ export default function ElderApp({ user: u0, onLogout }) {
       </main>
 
       {caption && <div className="captions" role="status" aria-live="polite">{caption}</div>}
+      {isDemo && <p className="foot">Sample data for preview. Nothing here is stored.</p>}
       <SosButton />
     </div>
   );
