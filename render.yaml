@@ -1,0 +1,25 @@
+# One-click backend for AarogyaSaathi (Render > New > Blueprint).
+services:
+  - type: web
+    name: aarogyasaathi-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DATABASE_URL
+        value: sqlite:///./docbuddy.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATA_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "true"
+      - key: CORS_ORIGINS
+        value: https://srilaasya487.github.io
+      - key: MEDIA_DIR
+        value: ./media
