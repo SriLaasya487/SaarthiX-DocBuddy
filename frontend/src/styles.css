@@ -1,12 +1,9 @@
 :root {
   --ink: #3A2A1F; --paper: #FBF5EA; --card: #FFFDF8; --line: #E6D8C0;
   --saffron: #F0A81C; --sos: #C62828; --ok: #3C7A4F; --muted: #6B5748; --clay: #C4572F;
-  font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 20px; line-height: 1.5;
+  font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 22px; line-height: 1.55;
 }
-:root { color-scheme: light dark; }
-@media (prefers-color-scheme: dark) {
-  :root { --ink: #F6EBDD; --paper: #231A14; --card: #2E231B; --line: #4A3A2E; --muted: #CDB9A5; }
-}
+:root { color-scheme: light; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); }
 button, input, textarea { font: inherit; }
@@ -18,7 +15,6 @@ h1 { font-size: 2rem; margin: .5rem 0 1rem; } h2 { font-size: 1.5rem; margin: .5
 .shell { max-width: 36rem; margin: 0 auto; min-height: 100vh; padding-bottom: 7rem; }
 .shell.wide { max-width: 64rem; }
 .bar { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .75rem 1rem; background: var(--ink); color: var(--paper); }
-@media (prefers-color-scheme: dark) { .bar { background: #1B130E; color: #F6EBDD; } }
 .tools { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
 .tools button { background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 8px; padding: .35rem .7rem; font-size: .85rem; cursor: pointer; }
 .page { padding: 1rem; }
@@ -60,7 +56,6 @@ input, textarea { padding: .7rem; border: 2px solid var(--ink); border-radius: 1
 /* ---- v2: accessibility + low-end modes ---- */
 .hc { --ink: #000; --paper: #fff; --card: #fff; --line: #000; --muted: #000; --saffron: #ffd400; }
 .hc .bar { background: #000; color: #fff; } .hc .big, .hc .tile, .hc input, .hc textarea { border-width: 4px; }
-@media (prefers-color-scheme: dark) { .hc { --ink: #fff; --paper: #000; --card: #000; --line: #fff; --muted: #fff; } }
 .lite *, .lite *::before, .lite *::after { animation: none !important; transition: none !important; box-shadow: none !important; }
 .lite body { font-family: system-ui, sans-serif; }
 .captions { position: fixed; left: 0; right: 0; bottom: 0; background: #000; color: #fff; font-size: 1.15rem; padding: .6rem 1rem; z-index: 25; max-height: 25vh; overflow: auto; }
@@ -104,3 +99,13 @@ h1, h2, .brand, .logo { font-family: "Fraunces", Georgia, serif; font-weight: 70
 .tiles.small .tile:nth-child(4n+2) .ico { background: #F3D3C4; } .tiles.small .tile:nth-child(4n+3) .ico { background: #D5E6D3; } .tiles.small .tile:nth-child(4n) .ico { background: #E4DAF0; }
 .due { border-radius: 18px; box-shadow: 0 3px 0 #D18F0E; }
 .foot { text-align: center; color: var(--muted); font-size: .8rem; padding: 1rem; }
+
+/* ---- elder-friendly pass ---- */
+.big { min-height: 4.6rem; font-size: 1.25rem; }
+.tiles.small .tile { min-height: 8.5rem; font-size: 1.2rem; border-radius: 22px; }
+.tiles.small .tile .ico { width: 4rem; height: 4rem; font-size: 2.4rem; }
+.card p:first-child { margin-top: 0; } .card p:last-child { margin-bottom: 0; }
+.page > .card, .page > .due { margin-bottom: 1rem; }
+.tiles { margin-top: .4rem; }
+input, textarea, select { font-size: 1.1rem; }
+.tools button { font-size: .95rem; padding: .5rem .8rem; }

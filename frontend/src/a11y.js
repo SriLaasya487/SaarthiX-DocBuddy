@@ -9,7 +9,7 @@ export function isLite(s = {}) {
 }
 export function applySettings(s) {
   const r = document.documentElement;
-  r.style.fontSize = 20 * (s.font_scale || 1) + "px";
+  r.style.fontSize = 22 * (s.font_scale || 1) + "px";
   r.classList.toggle("hc", !!s.high_contrast);
   r.classList.toggle("lite", isLite(s));
   r.dataset.captions = s.captions === false ? "off" : "on";

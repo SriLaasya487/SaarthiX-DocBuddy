@@ -1,5 +1,6 @@
 // Voice helpers on top of the browser Web Speech API.
 // Production: swap for Bhashini / AI4Bharat (or Google/Azure fallback) behind the same two functions.
+import { t, hasTx } from "./i18n.js";
 export const LANGUAGES = [
   { code: "hi-IN", label: "हिन्दी" }, { code: "te-IN", label: "తెలుగు" }, { code: "ta-IN", label: "தமிழ்" },
   { code: "bn-IN", label: "বাংলা" }, { code: "mr-IN", label: "मराठी" }, { code: "kn-IN", label: "ಕನ್ನಡ" },
@@ -11,6 +12,8 @@ export const setRate = (r) => { rate = r; };
 export const getRate = () => rate;
 
 export function speak(text, lang = lastLang) {
+  // Indic text -> speak in that language. English text with a translation -> translate. Otherwise read English in an English voice.
+  if (!/[^\u0000-\u024F]/.test(text)) { if (!lang.startsWith("en") && hasTx(text, lang)) text = t(text, lang); else lang = "en-IN"; }
   lastText = text; lastLang = lang;
   window.dispatchEvent(new CustomEvent("db-caption", { detail: text }));   // captions for people who cannot hear (DB-077)
   if (!("speechSynthesis" in window)) return;
