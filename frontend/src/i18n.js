@@ -44,7 +44,10 @@ export const TRANSLATIONS = {
     signIn: "साइन इन करें",
     greeting: "नमस्ते",
     allOnTrack: "आज सब कुछ ठीक चल रहा है।",
-    tellFine: "👍 परिवार को बताएं कि मैं ठीक हूँ"
+    tellFine: "👍 परिवार को बताएं कि मैं ठीक हूँ",
+    repeat: "🔊 दोहराएं",
+    slower: "🐢 धीमे",
+    goTo: "🎙️ यहाँ जाएं…"
   },
   "te-IN": {
     brandSubtitle: "ఆరోగ్య సాథి · మీ ప్రియమైన సంరక్షకుడు",
@@ -65,7 +68,10 @@ export const TRANSLATIONS = {
     signIn: "సైన్ ఇన్ చేయండి",
     greeting: "నమస్కారం",
     allOnTrack: "ఈ రోజు అంతా క్షేమంగా ఉంది.",
-    tellFine: "👍 నేను బాగున్నానని కుటుంబానికి చెప్పండి"
+    tellFine: "👍 నేను బాగున్నానని కుటుంబానికి చెప్పండి",
+    repeat: "🔊 మళ్ళీ వినండి",
+    slower: "🐢 నెమ్మదిగా",
+    goTo: "🎙️ వెళ్లండి…"
   },
   "ta-IN": {
     brandSubtitle: "ஆரோக்ய சாதி · உங்கள் பாசமான துணைவர்",
@@ -164,3 +170,28 @@ export const LANG_LIST = [
   { code: "bn-IN", label: "Bengali", native: "বাংলা" },
   { code: "en-IN", label: "English", native: "English" }
 ];
+
+/**
+ * Checks whether a translation key exists for a given language code.
+ */
+export function hasTx(key, lang = "en-IN") {
+  return Boolean(TRANSLATIONS[lang]?.[key] || TRANSLATIONS["en-IN"]?.[key]);
+}
+
+/**
+ * Returns the translated string for a key with fallback to English,
+ * and supports optional variable interpolation: t("hello {name}", "hi-IN", { name: "Rohan" })
+ */
+export function t(key, lang = "en-IN", params = {}) {
+  const dict = TRANSLATIONS[lang] || TRANSLATIONS["en-IN"] || {};
+  const fallbackDict = TRANSLATIONS["en-IN"] || {};
+  let text = dict[key] || fallbackDict[key] || key;
+
+  if (params && typeof params === "object") {
+    Object.keys(params).forEach((paramKey) => {
+      text = text.replace(new RegExp(`\\{${paramKey}\\}`, "g"), params[paramKey]);
+    });
+  }
+
+  return text;
+}
