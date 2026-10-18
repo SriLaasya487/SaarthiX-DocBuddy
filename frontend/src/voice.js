@@ -9,6 +9,9 @@ export const LANGUAGES = [
   { code: "bn-IN", label: "Bengali", native: "বাংলা" }
 ];
 
+// Export the array of supported language codes for Settings.jsx
+export const SUPPORTED = LANGUAGES.map(l => l.code);
+
 let lastText = "", lastLang = "en-IN", rate = 0.9;
 
 export const setRate = (r) => { rate = r; };
