@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { api, setToken, isDemo } from "../api.js";
-import { t as tr } from "../i18n.js";
-import { LANGUAGES, SUPPORTED, canListen, listen, parseDigits, speak } from "../voice.js";
+import { LANGUAGES, canListen, listen, parseDigits, speak } from "../voice.js";
 
 export default function Login({ onDone }) {
   const [step, setStep] = useState("who");
@@ -12,7 +11,6 @@ export default function Login({ onDone }) {
   const [otp, setOtp] = useState("");
   const [hint, setHint] = useState("");
   const [err, setErr] = useState("");
-  const L = role === "elder" ? lang : "en-IN";
 
   const sendOtp = async (ph = phone) => {
     setErr("");
@@ -71,22 +69,22 @@ export default function Login({ onDone }) {
 
       {step === "lang" && (
         <section className="stack">
-          <h2>Choose your language · अपनी भाषा चुनिए · మీ భాష ఎంచుకోండి</h2>
+          <h2>Choose your language</h2>
           <div className="grid2">
-            {LANGUAGES.filter((l) => SUPPORTED.includes(l.code)).map((l) => (
+            {LANGUAGES.map((l) => (
               <button key={l.code} className={"big " + (lang === l.code ? "primary" : "")} onClick={() => { setLang(l.code); speak(l.label, l.code); }}>{l.label}</button>
             ))}
           </div>
-          <button className="big primary" onClick={() => setStep("phone")}>{tr("Next", lang)}</button>
-          
+          <button className="big primary" onClick={() => setStep("phone")}>Next</button>
+          {canListen() && <button className="big mic" onClick={talk}>🎤 Sign up by talking</button>}
         </section>
       )}
 
       {step === "phone" && (
         <section className="stack">
-          <label>{tr("Your name", L)}<input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" /></label>
-          <label>{tr("Mobile number", L)}<input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" autoComplete="tel" /></label>
-          <button className="big primary" disabled={!phone} onClick={() => sendOtp()}>{tr("Send code", L)}</button>
+          <label>Your name<input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" /></label>
+          <label>Mobile number<input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" autoComplete="tel" /></label>
+          <button className="big primary" disabled={!phone} onClick={() => sendOtp()}>Send code</button>
         </section>
       )}
 
@@ -94,7 +92,7 @@ export default function Login({ onDone }) {
         <section className="stack">
           <label>Code sent to {phone}<input value={otp} onChange={(e) => setOtp(e.target.value)} inputMode="numeric" maxLength={6} /></label>
           {hint && <p className="note">Dev mode code: <b>{hint}</b></p>}
-          <button className="big primary" disabled={otp.length < 6} onClick={() => verify()}>{tr("Sign in", L)}</button>
+          <button className="big primary" disabled={otp.length < 6} onClick={() => verify()}>Sign in</button>
         </section>
       )}
       {err && <p className="error" role="alert">{err}</p>}
