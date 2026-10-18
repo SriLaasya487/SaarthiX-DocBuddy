@@ -57,12 +57,18 @@ export function listen(lang = "en-IN") {
   });
 }
 
-// Multilingual affirmative check for FallGuard SOS voice prompt
+// Multilingual affirmative check
 export function isYes(text) {
   if (!text) return false;
   const t = text.trim().toLowerCase();
-  // Matches "yes/fine/okay" across English, Hindi, Telugu, Tamil, Kannada, Marathi, Gujarati, Bengali
   return /yes|yeah|yep|ok|okay|fine|good|हाँ|ठीक|haan|theek|అవును|సరే|avunu|sare|ஆம்|சரி|aam|sari|ಹೌದು|ಸರಿ|haudu|हो|ho|હા|બરાબર|ha|barabar|হ্যাঁ|thik/i.test(t);
+}
+
+// Multilingual negative check
+export function isNo(text) {
+  if (!text) return false;
+  const t = text.trim().toLowerCase();
+  return /no|nope|nah|not|नहीं|nai|నహి|వద్దు|లేదు|vadu|ledu|இல்லை|வேண்டாம்|illai|vendaam|ಬೇಡ|ಇಲ್ಲ|beda|illa|नाही|नको|naahi|nako|ના|નથી|na|nathi|না/i.test(t);
 }
 
 // Multilingual keyword navigation map for all 8 languages + English
