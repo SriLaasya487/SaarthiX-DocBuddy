@@ -1,43 +1,59 @@
+/* ==========================================================================
+   AarogyaSaathi / DocBuddy - Complete Unified Accessible Theme
+   Valid CSS for Vite & PostCSS (Desktop + Mobile Responsive)
+========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
-  /* Soothing Pastel Palette with AAA Crisp Text Contrast */
-  --ink: #142830; /* Deep slate forest - highest readability */
-  --ink-muted: #4B636C; /* Calm secondary text */
-  --paper: #FAF7F2; /* Warm soothing ivory background */
-  --card: #FFFFFF; /* Crisp card surface */
-  --line: #E6E0D6; /* Soft pastel border */
+  /* Color Palette - AAA High Contrast Accessible */
+  --ink: #142830;
+  --ink-secondary: #4B636C;
+  --ink-muted: #4B636C;
+  --paper: #FAF7F2;
+  --card: #FFFFFF;
+  --line: #E6E0D6;
   --line-focus: #2A664B;
 
-  /* Pastel Functional Accents */
-  --pastel-sage: #E8F3ED; /* Calming sage background */
-  --sage-accent: #236544; /* Deep green text/icon */
-  --sage-border: #BCD9C9;
-  
-  --pastel-amber: #FFF2E3; /* Warm apricot/haldi tint */
-  --amber-accent: #C76517; /* Warm marigold */
+  /* Semantic Accents */
+  --primary: #D97724;
+  --primary-hover: #BF6214;
+  --primary-subtle: #FFF2E3;
+  --amber-accent: #C76517;
   --amber-border: #F7D4B4;
-  
-  --pastel-blue: #EBF3FA; /* Clinical / doctor pastel blue */
-  --blue-accent: #1E5587; /* Deep slate blue */
-  --blue-border: #C5DCF0;
-  
-  --pastel-purple: #F5EDFA; /* Devotion & companion pastel lilac */
-  --purple-accent: #6C428C; /* Deep royal plum */
-  --purple-border: #DEC8F2;
-  
-  --pastel-rose: #FDEEEE; /* Gentle safety pastel rose */
-  --rose-accent: #C43434; /* Deep warning crimson */
+
+  --ok: #1E7E52;
+  --ok-bg: #E8F3ED;
+  --ok-border: #BCD9C9;
+  --pastel-sage: #E8F3ED;
+  --sage-accent: #236544;
+  --sage-border: #BCD9C9;
+
+  --sos: #D32F2F;
+  --sos-bg: #FDF2F2;
+  --pastel-rose: #FDEEEE;
+  --rose-accent: #C43434;
   --rose-border: #F7C6C6;
 
-  /* Elevation & Geometry */
+  --blue-soft: #205493;
+  --blue-bg: #EBF3FA;
+  --pastel-blue: #EBF3FA;
+  --blue-accent: #1E5587;
+  --blue-border: #C5DCF0;
+
+  --purple-soft: #6A3F8B;
+  --purple-bg: #F5EDFA;
+  --pastel-purple: #F5EDFA;
+  --purple-accent: #6C428C;
+  --purple-border: #DEC8F2;
+
+  /* Geometry & Shadows */
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 24px;
   --radius-full: 9999px;
-  --shadow-sm: 0 2px 8px rgba(20, 40, 48, 0.04);
-  --shadow-md: 0 6px 20px rgba(20, 40, 48, 0.07);
-  --shadow-float: 0 12px 32px rgba(20, 40, 48, 0.16);
+  --shadow-sm: 0 2px 8px rgba(20, 40, 48, 0.05);
+  --shadow-md: 0 6px 20px rgba(20, 40, 48, 0.08);
+  --shadow-float: 0 12px 32px rgba(20, 40, 48, 0.18);
 
   font-family: "Atkinson Hyperlegible", "Plus Jakarta Sans", system-ui, sans-serif;
   font-size: 20px;
@@ -48,10 +64,16 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --ink: #EDF4F2;
+    --ink-secondary: #A8BFC6;
     --ink-muted: #A8BFC6;
     --paper: #111E24;
     --card: #182B33;
     --line: #25404B;
+    --primary-subtle: #332314;
+    --ok-bg: #1A3326;
+    --sos-bg: #2B1516;
+    --blue-bg: #182B3D;
+    --purple-bg: #2B1D36;
     --pastel-sage: #1A3326;
     --sage-accent: #7CD1A4;
     --pastel-amber: #332314;
@@ -65,26 +87,70 @@
   }
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
-button, input, textarea, select { font-family: inherit; font-size: inherit; }
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
 button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: 4px solid var(--amber-accent);
+  outline: 4px solid var(--primary);
   outline-offset: 3px;
 }
 
-/* Responsive Containers for Mobile & Laptop */
+/* Typography */
+h1 { font-size: 2.15rem; font-weight: 800; margin: 0.6rem 0 1.2rem; letter-spacing: -0.01em; color: var(--ink); }
+h2 { font-size: 1.6rem; font-weight: 700; margin: 0.5rem 0; color: var(--ink); }
+h3 { font-size: 1.25rem; font-weight: 700; margin: 0.3rem 0; }
+.lede { color: var(--ink-secondary); font-size: 1.15rem; margin-top: 0; }
+.note { color: var(--ink-secondary); margin: 0.25rem 0; font-size: 0.95rem; }
+
+/* Responsive Containers */
+.shell {
+  max-width: 44rem;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: 7.5rem;
+  background: var(--paper);
+}
+
+.shell.wide {
+  max-width: 68rem;
+}
+
+.page {
+  padding: 1.25rem;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
 .app-container {
   width: 100%;
   max-width: 1140px;
   margin: 0 auto;
   padding: 1.5rem 1rem 6rem;
 }
+
 @media (min-width: 768px) {
   .app-container {
     padding: 2rem 2rem 6rem;
@@ -101,8 +167,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   box-shadow: var(--shadow-md);
 }
 
-/* Header & Diya Branding */
-.brand-header { text-align: center; margin-bottom: 2rem; }
+/* Header & Brand */
+.brand-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
 .brand-logo {
   font-size: 3.2rem;
   line-height: 1;
@@ -110,42 +180,469 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   margin-bottom: 0.5rem;
   filter: drop-shadow(0 4px 10px rgba(217, 117, 59, 0.25));
 }
+
 .brand-title {
-  font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em;
-  margin: 0 0 0.3rem; color: var(--ink);
-}
-.brand-subtitle {
-  font-size: 1.25rem; color: var(--amber-accent);
-  font-weight: 700; margin: 0 0 0.6rem;
-}
-.brand-tagline {
-  font-size: 1.15rem; color: var(--ink-muted);
-  max-width: 440px; margin: 0 auto;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.3rem;
+  color: var(--ink);
 }
 
-/* Pastel Feature Highlights */
+.brand-subtitle {
+  font-size: 1.25rem;
+  color: var(--amber-accent);
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+}
+
+.brand-tagline {
+  font-size: 1.15rem;
+  color: var(--ink-muted);
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* Feature Highlights */
 .feature-highlights {
-  display: flex; flex-direction: column; gap: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
   margin: 1.75rem 0;
 }
+
 .highlight-pill {
-  display: flex; align-items: center; gap: 0.9rem;
-  padding: 0.9rem 1.1rem; border-radius: var(--radius-md);
-  font-weight: 600; font-size: 1.05rem; line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.4;
 }
+
 .highlight-pill.blue { background: var(--pastel-blue); color: var(--blue-accent); border: 1.5px solid var(--blue-border); }
 .highlight-pill.sage { background: var(--pastel-sage); color: var(--sage-accent); border: 1.5px solid var(--sage-border); }
-.highlight-pill.amber { background: var(--pastel-amber); color: var(--amber-accent); border: 1.5px solid var(--amber-border); }
+.highlight-pill.amber { background: var(--primary-subtle); color: var(--amber-accent); border: 1.5px solid var(--amber-border); }
 .highlight-pill .icon { font-size: 1.6rem; flex-shrink: 0; }
 
-/* Tactile Big Action Buttons */
+/* Sticky Navigation Bar */
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--card);
+  color: var(--ink);
+  border-bottom: 2px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.bar strong {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.tools {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tools button {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-full);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tools button:hover {
+  background: var(--primary-subtle);
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+
+/* Large Tactile Buttons */
+.big, .big-button {
+  min-height: 4.25rem;
+  padding: 0.9rem 1.25rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+  text-align: center;
+}
+
+.big:hover:not(:disabled), .big-button:hover:not(:disabled) {
+  border-color: var(--ink);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.big:active:not(:disabled), .big-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.big.primary, .big-button.primary-amber {
+  background: linear-gradient(135deg, #E67A26, #C76517);
+  border-color: #B35810;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(217, 119, 36, 0.35);
+}
+
+.big.primary:hover:not(:disabled), .big-button.primary-amber:hover:not(:disabled) {
+  background: linear-gradient(135deg, #F08735, #D46F1E);
+}
+
+.big.ok {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(30, 126, 82, 0.28);
+}
+
+.big.mic {
+  border: 2.5px dashed var(--primary);
+  background: var(--primary-subtle);
+  color: var(--primary-hover);
+}
+
+.big:disabled, .big-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .role-buttons {
-  display: flex; flex-direction: column; gap: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
   margin-top: 1.5rem;
 }
-.big-button {
-  min-height: 4.5rem; padding: 1rem 1.4rem; font-size: 1.2rem; font-weight: 700;
-  border-radius: var(--radius-md); border: 2px solid var(--line);
-  background: var(--card); color: var(--ink); cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-  box-shadow: var(--shadow-sm
+
+.back {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 800;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+/* Language Selection Grid */
+.language-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  margin: 1.25rem 0;
+}
+
+@media (min-width: 600px) {
+  .language-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.lang-chip {
+  padding: 1rem 0.6rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease;
+}
+
+.lang-chip span.native {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.lang-chip span.sub {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.lang-chip.active {
+  border-color: var(--amber-accent);
+  background: var(--primary-subtle);
+  color: var(--amber-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Dashboard Tiles */
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.tiles.small {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.tile {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  padding: 0.75rem 0.5rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--ink);
+}
+
+.tile .ico {
+  font-size: 2.1rem;
+  line-height: 1;
+  margin-bottom: 0.15rem;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--sos);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* Due Medicine Banner */
+.due {
+  width: 100%;
+  text-align: left;
+  background: var(--primary-subtle);
+  border: 2px solid var(--primary);
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.25rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Cards & Rows */
+.card {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.card.good {
+  border-color: var(--ok-border);
+  background: var(--ok-bg);
+}
+
+.card.muted {
+  color: var(--ink-secondary);
+  border-style: dashed;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row button {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.row button.stop {
+  border-color: var(--sos);
+  color: var(--sos);
+  background: var(--sos-bg);
+}
+
+/* Tabs */
+.tabs, .sub {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.tabs button, .sub button {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: var(--radius-full);
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: all 0.15s ease;
+}
+
+.tabs button.on, .sub button.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+/* Floating SOS Button */
+.sos, .sos-float {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 5.75rem;
+  height: 5.75rem;
+  border-radius: 50%;
+  border: 4px solid #FFFFFF;
+  background: linear-gradient(135deg, #E53935, #C22A2A);
+  color: #FFFFFF;
+  font-size: 1.65rem;
+  font-weight: 800;
+  box-shadow: 0 10px 28px rgba(194, 42, 42, 0.45);
+  cursor: pointer;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.sos:hover, .sos-float:hover {
+  transform: scale(1.05);
+}
+
+.sos:active, .sos-float:active {
+  transform: scale(0.95);
+}
+
+/* Form Controls */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+input, textarea, select {
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary);
+}
+
+.goodnews { color: var(--ok); font-weight: 700; }
+.error, .warn { color: var(--sos); font-weight: 700; }
+
+/* Modals */
+.modal {
+  position: fixed;
+  left: 1.25rem;
+  right: 1.25rem;
+  top: 15%;
+  max-width: 32rem;
+  margin: 0 auto;
+  background: var(--card);
+  color: var(--ink);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--sos);
+  box-shadow: var(--shadow-float);
+  z-index: 100;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.captions {
+  position: fixed;
+  bottom: 0.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(16, 42, 51, 0.92);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  z-index: 40;
+}
