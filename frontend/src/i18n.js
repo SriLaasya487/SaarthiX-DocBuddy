@@ -370,3 +370,51 @@ export const TRANSLATIONS = {
     }
   }
 };
+
+export const LANG_LIST = [
+  { code: "en-IN", label: "English", native: "English" },
+  { code: "hi-IN", label: "Hindi", native: "हिन्दी" },
+  { code: "te-IN", label: "Telugu", native: "తెలుగు" },
+  { code: "ta-IN", label: "Tamil", native: "தமிழ்" },
+  { code: "kn-IN", label: "Kannada", native: "ಕನ್ನಡ" },
+  { code: "mr-IN", label: "Marathi", native: "मराठी" },
+  { code: "gu-IN", label: "Gujarati", native: "ગુજરાતી" },
+  { code: "bn-IN", label: "Bengali", native: "বাংলা" }
+];
+
+/**
+ * Checks whether a translation key exists for a given language code.
+ */
+export function hasTx(key, lang = "en-IN") {
+  return Boolean(TRANSLATIONS[lang]?.[key] || TRANSLATIONS["en-IN"]?.[key]);
+}
+
+/**
+ * Returns the translated string for a key with fallback to English,
+ * and supports optional variable interpolation.
+ */
+export function t(key, lang = "en-IN", params = {}) {
+  const dict = TRANSLATIONS[lang] || TRANSLATIONS["en-IN"] || {};
+  const fallbackDict = TRANSLATIONS["en-IN"] || {};
+  let text = dict[key] || fallbackDict[key] || key;
+
+  // Handle nested keys (e.g., "tiles.meds")
+  if (key.includes(".")) {
+    const keys = key.split(".");
+    let val = dict;
+    let fbVal = fallbackDict;
+    for (const k of keys) {
+      val = val ? val[k] : undefined;
+      fbVal = fbVal ? fbVal[k] : undefined;
+    }
+    text = val || fbVal || key;
+  }
+
+  if (params && typeof params === "object") {
+    Object.keys(params).forEach((paramKey) => {
+      text = text.replace(new RegExp(`\\{${paramKey}\\}`, "g"), params[paramKey]);
+    });
+  }
+
+  return text;
+}
