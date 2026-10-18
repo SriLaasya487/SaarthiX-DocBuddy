@@ -71,6 +71,23 @@ export function isNo(text) {
   return /no|nope|nah|not|नहीं|nai|నహి|వద్దు|లేదు|vadu|ledu|இல்லை|வேண்டாம்|illai|vendaam|ಬೇಡ|ಇಲ್ಲ|beda|illa|नाही|नको|naahi|nako|ના|નથી|na|nathi|না/i.test(t);
 }
 
+// Helper for Health.jsx to ask a question and get a Yes/No response
+export async function confirmByVoice(prompt, lang = "en-IN") {
+  if (prompt) speak(prompt, lang);
+  
+  if (!canListen()) return false;
+  
+  // Give the voice synthesis a moment to speak before listening
+  await new Promise(resolve => setTimeout(resolve, 2500));
+  
+  try {
+    const ans = await listen(lang);
+    return isYes(ans);
+  } catch {
+    return false;
+  }
+}
+
 // Multilingual keyword navigation map for all 8 languages + English
 const NAV = [
   ["meds", /medicine|tablet|pill|dawai|dawa|goli|दवा|दवाई|మందులు|మాత్రలు|மருந்து|ಗುಳಿಗೆ|ಔಷಧಿ|औषध|ગોળી|ওষুধ/i],
