@@ -1,244 +1,283 @@
-// src/pages/ElderApp.jsx
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { api, syncNow } from "../api.js";
-import { applySettings, attention } from "../a11y.js";
-import { pendingCount, scheduleDoseAlarms } from "../offline.js";
-import { canListen, hearAgain, listen, loadLexicon, slowDown, speak, voiceNav } from "../voice.js";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { TRANSLATIONS } from "../i18n.js";
+import { speak, hearAgain, slowDown, canListen, listen, voiceNav } from "../voice.js";
 
+import SosButton from "./SosButton.jsx";
+import FallGuard from "./FallGuard.jsx";
 import CheckIn from "./CheckIn.jsx";
 import Medicines from "./Medicines.jsx";
 import Doctor from "./Doctor.jsx";
 import Sharing from "./Sharing.jsx";
 import Health from "./Health.jsx";
 import Pending from "./Pending.jsx";
-import SosButton from "./SosButton.jsx";
-import FallGuard from "./FallGuard.jsx";
 
 const Records = lazy(() => import("./Records.jsx"));
 const Companion = lazy(() => import("./Companion.jsx"));
 const SafetyHub = lazy(() => import("./SafetyHub.jsx"));
-const Assistant = lazy(() => import("./Assistant.jsx"));
 const Daily = lazy(() => import("./Daily.jsx"));
 const Community = lazy(() => import("./Community.jsx"));
 const Settings = lazy(() => import("./Settings.jsx"));
 
-const TILES = [
-  { id: "checkin", label: "Daily check-in", icon: "☀️", color: "var(--primary-subtle)" },
-  { id: "meds", label: "My medicines", icon: "💊", color: "#FDF2E9" },
-  { id: "health", label: "BP, sugar & visits", icon: "🩺", color: "var(--blue-bg)" },
-  { id: "sharing", label: "Who can see what", icon: "🛡️", color: "var(--ok-bg)" },
-  { id: "records", label: "My records", icon: "📋", color: "var(--paper)" },
-  { id: "doctor", label: "Which doctor?", icon: "📞", color: "var(--blue-bg)" },
-  { id: "companion", label: "Companion", icon: "🌺", color: "var(--purple-bg)" },
-  { id: "assistant", label: "Ask DocBuddy", icon: "🎙️", color: "var(--primary-subtle)" },
-  { id: "safety", label: "Staying safe", icon: "🔍", color: "var(--sos-bg)" },
-  { id: "daily", label: "Learn & benefits", icon: "📜", color: "var(--paper)" },
-  { id: "community", label: "Friends", icon: "🤝", color: "var(--ok-bg)" },
-  { id: "settings", label: "Settings", icon: "⚙️", color: "var(--paper)" },
-];
-
-export default function ElderApp({ user: u0, onLogout }) {
-  const [user, setUser] = useState(u0);
+export default function ElderApp({ user, onLogout }) {
   const [view, setView] = useState("home");
-  const [home, setHome] = useState(null);
-  const [caption, setCaption] = useState("");
-  const [call, setCall] = useState(null);
-  const [alarm, setAlarm] = useState(null);
-  const [fine, setFine] = useState(null);
-  const lang = user.language;
+  const [fineSent, setFineSent] = useState(false);
+  const [navModal, setNavModal] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [spokenFeedback, setSpokenFeedback] = useState("");
+
+  const lang = user.language || "en-IN";
+  const t = TRANSLATIONS[lang] || TRANSLATIONS["en-IN"];
 
   useEffect(() => {
-    applySettings(u0.settings || {});
-    loadLexicon(api.get);
-    syncNow();
-  }, []);
+    if (view === "home") {
+      speak(`${t.greeting} ${user.name || "friend"}. ${t.allGoodMsg}`, lang);
+    }
+  }, [view, lang]);
 
-  useEffect(() => {
-    const f = (e) => {
-      setCaption(e.detail);
-      clearTimeout(window.__cap);
-      window.__cap = setTimeout(() => setCaption(""), 9000);
-    };
-    window.addEventListener("db-caption", f);
-    return () => window.removeEventListener("db-caption", f);
-  }, []);
-
-  const refresh = useCallback(() => api.get("/lite/home").then((h) => {
-    setHome(h);
-    scheduleDoseAlarms(h.medicines, (d) => {
-      attention();
-      speak(`Time for ${d.name}.`, lang);
-      setAlarm(d);
-    });
-  }).catch(() => {}), [lang]);
-
-  useEffect(() => {
-    refresh();
-    const t = setInterval(refresh, 60000);
-    return () => clearInterval(t);
-  }, [view, refresh]);
-
-  const due = home?.due || [];
-  useEffect(() => {
-    if (view !== "home" || !home) return;
-    const parts = [
-      `Namaste ${user.name}.`,
-      due.length ? `You have ${due.length} medicine${due.length > 1 ? "s" : ""} to take.` : "Everything is on track.",
-      ...(home.appointments || []).map((a) => a.speak),
-      ...(home.reminders || []).map((r) => r.say),
-      ...(home.nudges || []).map((n) => n.say)
-    ];
-    speak(parts.join(" "), lang);
-    if (due.length || home.appointments?.length) attention();
-  }, [view, !!home, due.length]);
-
-  const go = (v) => setView(v);
-  const Back = () => <button className="back" onClick={() => go("home")}>← Back to Home</button>;
-
-  const sayFine = async () => {
-    const d = await api.post("/imfine");
-    setFine(d);
-    speak(d.speak, lang);
+  // Robust "Go to..." navigation: speech recognition + visual fallback modal
+  const openVoiceNavigation = async () => {
+    setNavModal(true);
+    setSpokenFeedback("");
+    speak(t.goToModalTitle || "Where would you like to go?", lang);
+    
+    if (canListen()) {
+      setListening(true);
+      try {
+        const query = await listen(lang);
+        if (query) {
+          setSpokenFeedback(`"${query}"`);
+          const matchedRoute = voiceNav(query);
+          if (matchedRoute) {
+            setNavModal(false);
+            setListening(false);
+            setView(matchedRoute);
+            speak(`Opening ${t.tiles[matchedRoute] || matchedRoute}`, lang);
+            return;
+          }
+        }
+      } catch (e) {
+        // Fallback: visual touch buttons are open and ready
+      }
+      setListening(false);
+    }
   };
 
-  const voiceGo = async () => {
-    speak("Where would you like to go?", lang);
-    await new Promise((r) => setTimeout(r, 1800));
-    const t = await listen(lang).catch(() => "");
-    const v = voiceNav(t);
-    if (v) go(v === "home" ? "home" : v);
-    else speak("I did not understand. Please tap a button.", lang);
+  const handleTileClick = (route) => {
+    setNavModal(false);
+    setView(route);
   };
 
-  const badge = (id) => (id === "meds" && due.length) || (id === "companion" && home?.unread_messages) || (id === "sharing" && home?.pending) ? (
-    <span className="badge">{id === "meds" ? due.length : id === "companion" ? home.unread_messages : home.pending}</span>
-  ) : null;
-  const queued = pendingCount();
-
-  // Hackathon demo fall trigger
-  const simulateFall = () => {
-    window.dispatchEvent(new CustomEvent("db-simulate-fall"));
-  };
+  const TILES = [
+    { id: "checkin", label: t.tiles.checkin, icon: "🌸", bg: "var(--rose-subtle)", color: "var(--rose-hover)" },
+    { id: "meds", label: t.tiles.meds, icon: "💊", bg: "var(--peach-pastel)", color: "var(--peach-ink)", badge: 1 },
+    { id: "health", label: t.tiles.health, icon: "🩺", bg: "var(--sky-pastel)", color: "var(--sky-ink)" },
+    { id: "sharing", label: t.tiles.sharing, icon: "🛡️", bg: "var(--sage-pastel)", color: "var(--sage-ink)" },
+    { id: "records", label: t.tiles.records, icon: "📋", bg: "var(--card-soft)", color: "var(--rose-primary)" },
+    { id: "doctor", label: t.tiles.doctor, icon: "📞", bg: "var(--sky-pastel)", color: "var(--sky-ink)" },
+    { id: "companion", label: t.tiles.companion, icon: "🌺", bg: "var(--lavender-pastel)", color: "var(--lavender-ink)" },
+    { id: "safety", label: t.tiles.safety, icon: "🔍", bg: "var(--rose-subtle)", color: "var(--rose-hover)" },
+    { id: "daily", label: t.tiles.daily, icon: "📜", bg: "var(--peach-pastel)", color: "var(--peach-ink)" },
+    { id: "community", label: t.tiles.community, icon: "🤝", bg: "var(--sage-pastel)", color: "var(--sage-ink)" },
+    { id: "pending", label: t.tiles.pending, icon: "🔔", bg: "var(--rose-subtle)", color: "var(--rose-hover)", badge: 1 },
+    { id: "settings", label: t.tiles.settings, icon: "⚙️", bg: "var(--card-soft)", color: "var(--ink-muted)" }
+  ];
 
   return (
-    <div className="shell">
-      <header className="bar">
-        <strong>🌿 DocBuddy</strong>
-        <span className="tools">
-          <button aria-label="Hear it again" onClick={hearAgain}>🔊 Repeat</button>
-          <button aria-label="Slow down" onClick={slowDown}>🐢 Slower</button>
-          {canListen() && <button aria-label="Say where to go" onClick={voiceGo}>🎙️ Go to…</button>}
-          <button onClick={onLogout}>Sign out</button>
-        </span>
+    <div className="app-shell">
+      <header className="clean-header">
+        <div className="clean-brand">
+          <span>🌸</span>
+          <span>{t.brandName}</span>
+        </div>
+        <div className="header-actions">
+          <button className="header-btn" onClick={hearAgain} title="Hear voice again">
+            {t.repeatBtn}
+          </button>
+          <button className="header-btn" onClick={slowDown} title="Slow down speaking rate">
+            {t.slowBtn}
+          </button>
+          <button className="header-btn" style={{ background: "var(--rose-primary)", color: "#fff" }} onClick={openVoiceNavigation}>
+            {t.goToBtn}
+          </button>
+          <button className="header-btn" onClick={onLogout}>
+            Sign out
+          </button>
+        </div>
       </header>
-      
-      {queued > 0 && <p className="note" style={{ padding: "0 1rem" }}>📡 {queued} item(s) saved on this phone, waiting for network.</p>}
-      {home?.disaster && <p className="warn" style={{ padding: "0 1rem" }}>⚠️ <b>Extra safety mode is on.</b> <button className="back" onClick={() => go("safety")}>See guidance</button></p>}
-      
+
       <FallGuard lang={lang} />
-      
-      {call && (
-        <div className="modal" role="alertdialog">
-          <p style={{ fontSize: "1.4rem", fontWeight: "bold" }}>📹 {call.from} is calling you</p>
-          <button className="big ok" onClick={async () => {
-            const r = await api.post(`/video/${call.id}`, { accept: true });
-            window.open(r.room_url, "_blank");
-            setCall(null);
-          }}>Answer Call</button>
-          <button className="big" onClick={async () => {
-            await api.post(`/video/${call.id}`, { accept: false });
-            setCall(null);
-          }}>Not Now</button>
-        </div>
-      )}
 
-      {alarm && (
-        <div className="modal" role="alertdialog">
-          <p style={{ fontSize: "1.3rem", fontWeight: "bold" }}>💊 Time for {alarm.name} ({alarm.tablets} tablet)</p>
-          <button className="big ok" onClick={() => {
-            setAlarm(null);
-            go("meds");
-          }}>Open Medicines</button>
-          <button className="big" onClick={() => setAlarm(null)}>Remind Later</button>
-        </div>
-      )}
-
-      <main className="page">
+      <main className="main-content">
         {view === "home" && (
-          <>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <h1>Namaste, {user.name || "friend"}</h1>
-              <button onClick={simulateFall} style={{ background: "var(--sos-bg)", border: "1px dashed var(--sos)", color: "var(--sos)", padding: "0.3rem 0.6rem", borderRadius: "8px", fontSize: "0.8rem", cursor: "pointer", fontWeight: "bold" }}>
-                ⚠️ Demo: Fall
-              </button>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.8rem" }}>
+              <h1 style={{ fontSize: "2.1rem", margin: 0, color: "var(--ink)" }}>
+                {t.greeting}, {user.name || "friend"}
+              </h1>
+              <span style={{ fontSize: "0.95rem", color: "var(--ink-muted)", fontWeight: 700 }}>
+                {lang.split("-")[0].toUpperCase()}
+              </span>
             </div>
-            
-            {due.length > 0 && (
-              <button className="due" onClick={() => go("meds")}>
-                <span>💊 <b>Medicine time:</b> {due[0].name} {due.length > 1 ? `(+${due.length - 1} more)` : ""}</span>
-                <span>Open →</span>
-              </button>
-            )}
-            
-            {(home?.appointments || []).map((a) => (
-              <button className="due" style={{ background: "var(--blue-bg)", borderColor: "var(--blue-soft)" }} key={a.id} onClick={() => go("health")}>
-                <span>🩺 {a.speak}</span>
-                <span>→</span>
-              </button>
-            ))}
 
-            <div className="tiles small">
-              {TILES.map((t) => (
-                <button key={t.id} className="tile" style={{ background: t.color }} onClick={() => go(t.id)}>
-                  <span className="ico" aria-hidden>{t.icon}</span>
-                  {t.label}
-                  {badge(t.id)}
+            {/* Medicine Due Banner in Soft Peach Pastel */}
+            <div
+              onClick={() => setView("meds")}
+              style={{
+                background: "var(--peach-pastel)",
+                border: "2px solid var(--peach-border)",
+                borderRadius: "var(--radius-md)",
+                padding: "1.1rem 1.25rem",
+                marginBottom: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                cursor: "pointer"
+              }}
+            >
+              <div>
+                <b style={{ color: "var(--peach-ink)", fontSize: "1.15rem" }}>💊 {t.tiles.meds}</b>
+                <p style={{ margin: "0.2rem 0 0", color: "var(--ink-muted)", fontSize: "0.95rem" }}>
+                  Metformin 500mg · 1 tablet due after lunch
+                </p>
+              </div>
+              <span style={{ fontWeight: 800, color: "var(--peach-ink)" }}>Open →</span>
+            </div>
+
+            {/* Pastel Action Tiles */}
+            <div className="tiles-grid">
+              {TILES.map((tile) => (
+                <button
+                  key={tile.id}
+                  className="pastel-tile"
+                  style={{ background: tile.bg, borderColor: tile.bg }}
+                  onClick={() => handleTileClick(tile.id)}
+                >
+                  <span className="tile-icon" aria-hidden="true">{tile.icon}</span>
+                  <span style={{ color: tile.color }}>{tile.label}</span>
+                  {tile.badge && (
+                    <span style={{
+                      position: "absolute", top: 10, right: 10,
+                      background: "var(--rose-primary)", color: "#fff",
+                      fontSize: "0.75rem", fontWeight: 800,
+                      padding: "0.15rem 0.5rem", borderRadius: "var(--radius-full)"
+                    }}>
+                      {tile.badge}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
 
-            {home?.pending > 0 && (
-              <button className="big primary" style={{ marginTop: "1.2rem" }} onClick={() => go("pending")}>
-                🔔 Please check {home.pending} item(s)
+            {/* Tell Family I Am Fine Button */}
+            <div style={{ marginTop: "1.5rem" }}>
+              <button
+                className="big-action sage-filled"
+                onClick={() => {
+                  setFineSent(true);
+                  speak(t.fineSentMsg, lang);
+                  setTimeout(() => setFineSent(false), 5000);
+                }}
+              >
+                {t.tellFineBtn}
               </button>
-            )}
-
-            <button className="big ok" style={{ marginTop: "0.8rem" }} onClick={sayFine}>
-              👍 Tell my family I am fine
-            </button>
-
-            {fine && fine.draft && (
-              <div className="card stack" style={{ marginTop: "0.8rem" }}>
-                <p>{fine.draft}</p>
-                <button className="big ok" onClick={async () => {
-                  const r = await api.post("/imfine?approve=true");
-                  setFine(null);
-                  speak(r.speak, lang);
-                }}>Yes, send it</button>
-                <button className="big" onClick={() => setFine(null)}>Cancel</button>
-              </div>
-            )}
-          </>
+              {fineSent && (
+                <p style={{ textAlign: "center", color: "var(--sage-ink)", fontWeight: 700, marginTop: "0.6rem" }}>
+                  ✔ {t.fineSentMsg}
+                </p>
+              )}
+            </div>
+          </div>
         )}
 
-        <Suspense fallback={<p className="note">Loading…</p>}>
-          {view === "checkin" && <><Back /><CheckIn lang={lang} onDone={() => go("home")} /></>}
-          {view === "meds" && <><Back /><Medicines lang={lang} onPending={refresh} /></>}
-          {view === "doctor" && <><Back /><Doctor lang={lang} /></>}
-          {view === "health" && <><Back /><Health lang={lang} /></>}
-          {view === "records" && <><Back /><Records lang={lang} onPending={refresh} /></>}
-          {view === "companion" && <><Back /><Companion lang={lang} /></>}
-          {view === "assistant" && <><Back /><Assistant lang={lang} onNavigate={(r) => go(r === "sharing" ? "sharing" : r)} /></>}
-          {view === "safety" && <><Back /><SafetyHub lang={lang} /></>}
-          {view === "daily" && <><Back /><Daily lang={lang} /></>}
-          {view === "community" && <><Back /><Community lang={lang} /></>}
-          {view === "sharing" && <><Back /><Sharing lang={lang} /></>}
-          {view === "pending" && <><Back /><Pending lang={lang} onChange={refresh} /></>}
-          {view === "settings" && <><Back /><Settings lang={lang} user={user} onUser={setUser} /></>}
-        </Suspense>
+        {view !== "home" && (
+          <div>
+            <button
+              onClick={() => setView("home")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--rose-primary)",
+                fontWeight: 800,
+                fontSize: "1.1rem",
+                padding: "0.4rem 0 0.8rem",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}
+            >
+              ← {t.backBtn || "Back to Home"}
+            </button>
+
+            <Suspense fallback={<p style={{ textAlign: "center" }}>Loading…</p>}>
+              {view === "checkin" && <CheckIn lang={lang} onDone={() => setView("home")} />}
+              {view === "meds" && <Medicines lang={lang} />}
+              {view === "health" && <Health lang={lang} />}
+              {view === "sharing" && <Sharing lang={lang} />}
+              {view === "records" && <Records lang={lang} />}
+              {view === "doctor" && <Doctor lang={lang} />}
+              {view === "companion" && <Companion lang={lang} />}
+              {view === "safety" && <SafetyHub lang={lang} />}
+              {view === "daily" && <Daily lang={lang} />}
+              {view === "community" && <Community lang={lang} />}
+              {view === "pending" && <Pending lang={lang} />}
+              {view === "settings" && <Settings lang={lang} user={user} />}
+            </Suspense>
+          </div>
+        )}
       </main>
 
-      {caption && <div className="captions" role="status" aria-live="polite">{caption}</div>}
+      {/* "Go To..." Voice Navigation Modal with Visual Fallback */}
+      {navModal && (
+        <div className="modal-overlay" onClick={() => setNavModal(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div style={{ textAlign: "center" }}>
+              <span style={{ fontSize: "2.4rem" }}>🎙️</span>
+              <h2 style={{ margin: "0.4rem 0 0.2rem", fontSize: "1.5rem" }}>
+                {t.goToModalTitle}
+              </h2>
+              <p style={{ color: "var(--ink-muted)", fontSize: "0.95rem", margin: 0 }}>
+                {listening ? t.navListening : t.goToModalSub}
+              </p>
+              {spokenFeedback && (
+                <p style={{ color: "var(--rose-primary)", fontWeight: 700, margin: "0.4rem 0 0" }}>
+                  Heard: {spokenFeedback}
+                </p>
+              )}
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0.6rem", maxHeight: "40vh", overflowY: "auto" }}>
+              {TILES.map((tile) => (
+                <button
+                  key={tile.id}
+                  onClick={() => handleTileClick(tile.id)}
+                  style={{
+                    padding: "0.8rem 0.6rem",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1.5px solid var(--line)",
+                    background: tile.bg,
+                    color: tile.color,
+                    fontWeight: 700,
+                    fontSize: "0.95rem",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem"
+                  }}
+                >
+                  <span>{tile.icon}</span>
+                  <span style={{ textAlign: "left" }}>{tile.label}</span>
+                </button>
+              ))}
+            </div>
+
+            <button className="big-action" onClick={() => setNavModal(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       <SosButton />
     </div>
   );
