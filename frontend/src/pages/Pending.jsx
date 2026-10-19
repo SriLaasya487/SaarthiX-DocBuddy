@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
-import { t as tr } from "../i18n.js";
+import { t as tr } from "../translate.js";
 import { confirmByVoice, speak } from "../voice.js";
 
 // The "confirm centre": nothing scanned, spoken, or set up by family is saved until the elder says Yes (principle 4).
