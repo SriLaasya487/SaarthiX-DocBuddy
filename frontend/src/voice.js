@@ -41,8 +41,53 @@ const warned = {};
 const isIndic = (s) => /[^\u0000-\u024F]/.test(s);
 
 // ---------- speaking ----------
+// Natural voices from the server (Google / Bhashini) when VITE_API_URL is set. Falls back to the phone's own voice.
+const BASE = import.meta.env?.VITE_API_URL || "";
+const CLOUD = !!BASE && import.meta.env?.VITE_TTS !== "off";
+export const cloudVoiceOn = () => CLOUD;
+const audioCache = new Map();
+let audioEl = null, token = 0;
+const stopAudio = () => { token++; try { audioEl?.pause(); } catch { /* none */ } };
+
+async function fetchAudio(text, lang) {
+  const key = `${lang}|${rate.toFixed(1)}|${text}`;
+  if (audioCache.has(key)) return audioCache.get(key);
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 10000);   // a sleeping server may be slow: fall back
+  try {
+    const r = await fetch(BASE + "/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, lang, rate }), signal: ctl.signal });
+    if (!r.ok) throw new Error("tts " + r.status);
+    const url = URL.createObjectURL(await r.blob());
+    audioCache.set(key, url);
+    return url;
+  } finally { clearTimeout(timer); }
+}
+const groups = (text) => {
+  const parts = text.match(/[^.!?।\n]+[.!?।]?/g) || [text], out = []; let cur = "";
+  for (const p of parts) { if ((cur + p).length > 280 && cur) { out.push(cur.trim()); cur = p; } else cur += p; }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+};
+const playUrl = (url) => new Promise((resolve, reject) => {
+  audioEl = audioEl || new Audio();
+  audioEl.onended = resolve; audioEl.onerror = () => reject(new Error("audio"));
+  audioEl.src = url; audioEl.play().catch(reject);
+});
+async function sayCloud(out, lang) {
+  synth?.cancel(); stopAudio();
+  const mine = token, parts = groups(out);
+  const urls = parts.map((p) => fetchAudio(p, lang));
+  urls.forEach((u) => u.catch(() => {}));
+  for (let i = 0; i < parts.length; i++) {
+    let url;
+    try { url = await urls[i]; } catch (e) { if (i === 0) throw e; return; }
+    if (mine !== token) return;
+    await playUrl(url);
+    if (mine !== token) return;
+  }
+}
+
 function say(out, lang) {
-  synth.cancel();
+  stopAudio(); synth.cancel();
   const chunks = out.match(/[^.!?।\n]+[.!?।]?/g) || [out];
   return new Promise((resolve) => {
     let i = 0, done = false;
@@ -61,26 +106,39 @@ function say(out, lang) {
     setTimeout(next, 60);   // Chrome drops speech started right after cancel()
   });
 }
+// cloud voice for non-English when available, otherwise the phone's voice
+function play(out, lang, orig = out) {
+  if (CLOUD && !lang.startsWith("en")) {
+    return sayCloud(out, lang).catch((e) => {
+      if (e?.name === "NotAllowedError") { pending = { out, lang }; return; }
+      return deviceSpeak(orig, out, lang);
+    });
+  }
+  return deviceSpeak(orig, out, lang);
+}
+function deviceSpeak(orig, out, lg) {
+  if (!synth) return Promise.resolve();
+  // This phone has no voice for the language: read the English original instead (or show text only)
+  if (!lg.startsWith("en") && !hasVoice(lg)) {
+    if (!warned[lg]) { warned[lg] = 1; caption(`No ${(LANGUAGES.find((x) => x.code === lg) || {}).english || lg} voice on this device. Showing text only. Try Chrome on Android.`); }
+    if (!isIndic(orig)) { out = orig; lg = "en-IN"; } else { caption(out); return Promise.resolve(); }
+  }
+  return say(out, lg);
+}
 
 export function speak(text, lang = lastLang) {
   if (!text) return Promise.resolve();
   const orig = String(text);
   let out = orig, lg = lang;
   if (!isIndic(out)) { if (!lg.startsWith("en") && hasTx(out, lg)) out = t(out, lg); else lg = "en-IN"; }
-  // This phone has no voice for the language: read the English original instead (or show text only)
-  if (!lg.startsWith("en") && !hasVoice(lg)) {
-    if (!warned[lg]) { warned[lg] = 1; caption(`No ${(LANGUAGES.find((x) => x.code === lg) || {}).english || lg} voice on this device. Showing text only. Try Chrome on Android.`); }
-    if (!isIndic(orig)) { out = orig; lg = "en-IN"; } else { caption(out); lastText = out; lastLang = lg; return Promise.resolve(); }
-  }
   lastText = out; lastLang = lg;
   caption(out);
-  if (!synth) return Promise.resolve();
   const active = !W.navigator?.userActivation || W.navigator.userActivation.hasBeenActive;
   if (!active) { pending = { out, lang: lg }; return Promise.resolve(); }   // wait for the first tap
-  return say(out, lg);
+  return play(out, lg, orig);
 }
 // the first tap anywhere plays whatever was waiting (e.g. the home-screen greeting)
-["pointerdown", "keydown", "touchstart"].forEach((ev) => W.addEventListener?.(ev, () => { if (pending && synth) { const p = pending; pending = null; say(p.out, p.lang); } }, { passive: true }));
+["pointerdown", "keydown", "touchstart"].forEach((ev) => W.addEventListener?.(ev, () => { if (pending) { const p = pending; pending = null; play(p.out, p.lang); } }, { passive: true }));
 
 export const hearAgain = () => speak(lastText, lastLang);
 export function slowDown() { rate = Math.max(0.5, rate - 0.2); return hearAgain(); }
@@ -93,7 +151,7 @@ export function listen(lang = "en-IN") {
   return new Promise((resolve, reject) => {
     const SR = W.SpeechRecognition || W.webkitSpeechRecognition;
     if (!SR) return reject(new Error("Voice input is not supported in this browser. Please use Chrome."));
-    synth?.cancel();                         // do not let the mic hear our own voice
+    synth?.cancel(); stopAudio();            // do not let the mic hear our own voice
     try { rec?.abort(); } catch { /* none running */ }
     const r = new SR(); rec = r;
     r.lang = lang; r.interimResults = false; r.maxAlternatives = 1; r.continuous = false;
