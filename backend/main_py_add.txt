@@ -1,0 +1,4 @@
+# --- natural voices (text-to-speech) ---
+from .routers import tts as tts_router  # noqa: E402
+
+app.include_router(tts_router.router)
