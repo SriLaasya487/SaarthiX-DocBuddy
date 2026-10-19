@@ -11,3 +11,4 @@ if ("serviceWorker" in navigator && import.meta.env.PROD)
     .catch(() => {});
 createRoot(document.getElementById("root")).render(<App />);
 startDomTranslate();
+
