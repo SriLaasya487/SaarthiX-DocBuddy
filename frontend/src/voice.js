@@ -1,4 +1,7 @@
-import { t, hasTx } from "./i18n.js";
+// Voice helpers on top of the browser Web Speech API.
+// Fixes: picks a real installed voice, never reads English in a Hindi/Telugu voice, waits for the first tap
+// (browsers block sound before that), speaks long text in pieces, and listens only after speech has ended.
+import { t, hasTx } from "./translate.js";
 
 const W = typeof window !== "undefined" ? window : {};
 const synth = W.speechSynthesis;
