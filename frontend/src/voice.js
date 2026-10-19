@@ -1,7 +1,7 @@
 // Voice helpers on top of the browser Web Speech API.
 // Fixes: picks a real installed voice, never reads English in a Hindi/Telugu voice, waits for the first tap
 // (browsers block sound before that), speaks long text in pieces, and listens only after speech has ended.
-import { t, hasTx } from "./translate.js";
+import { translate } from "./translate.js";
 
 const W = typeof window !== "undefined" ? window : {};
 const synth = W.speechSynthesis;
@@ -130,7 +130,8 @@ export function speak(text, lang = lastLang) {
   if (!text) return Promise.resolve();
   const orig = String(text);
   let out = orig, lg = lang;
-  if (!isIndic(out)) { if (!lg.startsWith("en") && hasTx(out, lg)) out = t(out, lg); else lg = "en-IN"; }
+  out = out.replace(/DocBuddy/g, "AarogyaSaathi");
+  if (!isIndic(out)) { const tr = !lg.startsWith("en") ? translate(out, lg) : null; if (tr) out = tr; else lg = "en-IN"; }
   lastText = out; lastLang = lg;
   caption(out);
   const active = !W.navigator?.userActivation || W.navigator.userActivation.hasBeenActive;
