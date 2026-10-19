@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { api } from "../api.js";
-import { t as tr } from "../i18n.js";
+import { t as tr } from "../translate.js";
 
 export default function SosButton({ lang = "en-IN" }) {
   const [msg, setMsg] = useState("");
