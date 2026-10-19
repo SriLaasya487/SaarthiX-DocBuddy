@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "../api.js";
 import { speak } from "../voice.js";
-import { t as tr } from "../i18n.js";
+import { t as tr } from "../translate.js";
 import { analyse } from "../pillvision.js";
 
 export default function Medicines({ lang, onPending }) {
