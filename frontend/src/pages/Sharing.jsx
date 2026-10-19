@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
-import { t as tr } from "../i18n.js";
+import { t as tr } from "../translate.js";
 import { canListen, listen, speak } from "../voice.js";
 
 const ROLES = [["primary", "Main caregiver"], ["sibling", "Another family member"], ["doctor", "Doctor"], ["neighbour", "Trusted neighbour (reached first in an emergency)"],
