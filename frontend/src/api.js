@@ -1,5 +1,6 @@
 import { cacheGet, cacheSet, enqueue, flush, toOp } from "./offline.js";
 import { demoCall } from "./demo.js";
+import { setDomLanguage } from "./domtranslate.js";
 
 const BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 // Demo mode: no backend needed. On the live site it is on automatically when VITE_API_URL is not set.
@@ -10,8 +11,17 @@ export const setToken = (t) => { token = t; t ? localStorage.setItem("db_token",
 export const hasToken = () => !!token;
 const NOCACHE = /^\/(me\/export|.*\/(file|audio))/;
 
+// remember the chosen language so every screen can be shown in it
+function noteLanguage(method, path, body, data) {
+  try {
+    if (path === "/me" && method === "GET" && data?.language) setDomLanguage(data.language);
+    else if (path === "/me" && method === "PATCH" && body?.language) setDomLanguage(body.language);
+    else if (path === "/auth/verify" && data?.user?.language) setDomLanguage(data.user.language);
+  } catch { /* never block the app */ }
+}
+
 async function call(method, path, body) {
-  if (isDemo) return demoCall(method, path, body, token);
+  if (isDemo) { const d = await demoCall(method, path, body, token); noteLanguage(method, path, body, d); return d; }
   let res;
   try {
     res = await fetch(BASE + path, {
@@ -30,6 +40,7 @@ async function call(method, path, body) {
     throw new Error(err.detail || `Error ${res.status}`);
   }
   const data = await res.json();
+  noteLanguage(method, path, body, data);
   if (method === "GET" && !NOCACHE.test(path)) cacheSet(path, data);
   return data;
 }
