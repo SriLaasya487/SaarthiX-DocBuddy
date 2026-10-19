@@ -1,6 +1,28 @@
 import { useState } from "react";
 import { TRANSLATIONS } from "../i18n.js";
+import { t as tr } from "../translate.js";
+import { api, setToken } from "../api.js";
 import { speak } from "../voice.js";
+
+// Fixed test accounts for the quick-demo buttons. They are real accounts on the real server.
+const DEMO = { elder: { phone: "9000000001", name: "Sarala Devi" }, family: { phone: "9000000002", name: "Rohan" } };
+
+// First time Sarala signs in, give her a believable week so no screen is empty. Each step is optional.
+async function seedElder() {
+  const tryit = async (fn) => { try { await fn(); } catch { /* skip */ } };
+  let meds = [];
+  try { meds = await api.get("/medicines"); } catch { /* none */ }
+  if (meds.length) return;
+  await tryit(() => api.post("/medicines", { name: "Metformin 500mg", tablets: 1, times: "09:00,21:00", stock: 20, color: "white" }));
+  await tryit(() => api.post("/medicines", { name: "Amlodipine 5mg", tablets: 1, times: "09:00", stock: 30, color: "pink" }));
+  await tryit(() => api.post("/vitals", { kind: "bp", value1: 138, value2: 88 }));
+  await tryit(() => api.post("/vitals", { kind: "sugar", value1: 126 }));
+  await tryit(() => api.post("/appointments", { doctor: "Dr. Reddy (Diabetes)", at: new Date(Date.now() + 2 * 864e5).toISOString().replace("Z", "") }));
+  await tryit(() => api.put("/emergency-card", { blood_group: "B+", allergies: "Penicillin", conditions: "Diabetes, high BP", doctor_name: "Dr. Reddy", doctor_phone: "9800000000", contacts: "Rohan:9000000002" }));
+  for (const dt of ["medicines", "report", "vitals", "mood", "imfine"]) {
+    await tryit(() => api.post("/consents", { grantee_phone: DEMO.family.phone, grantee_name: "Rohan", data_type: dt, scope: "view", days: null, relation: "son" }));
+  }
+}
 
 export default function Login({ onDone }) {
   const [step, setStep] = useState("who"); // who -> lang -> phone -> otp
@@ -10,6 +32,8 @@ export default function Login({ onDone }) {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [hint, setHint] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const t = TRANSLATIONS[lang] || TRANSLATIONS["en-IN"];
 
@@ -29,13 +53,37 @@ export default function Login({ onDone }) {
     speak(chosenT.chooseLangTitle || "Language selected", selectedCode);
   };
 
-  const startDemoAsSenior = () => {
-    onDone({ id: 1, name: "Sarala Devi", role: "elder", language: lang || "en-IN" });
+  const clean = (p) => String(p).replace(/[^\d+]/g, "");
+
+  const sendOtp = async () => {
+    setErr(""); setBusy(true);
+    try { const r = await api.post("/auth/request-otp", { phone: clean(phone) }); setHint(r.dev_otp || ""); setStep("otp"); }
+    catch (e) { setErr(e.message); }
+    setBusy(false);
   };
 
-  const startDemoAsFamily = () => {
-    onDone({ id: 2, name: "Rohan", role: "family", language: lang || "en-IN" });
+  const verify = async () => {
+    setErr(""); setBusy(true);
+    try {
+      const r = await api.post("/auth/verify", { phone: clean(phone), otp, name: name || "Friend", role, language: role === "elder" ? lang : "en-IN" });
+      setToken(r.token); onDone(r.user);
+    } catch (e) { setErr(e.message); setBusy(false); }
   };
+
+  // Quick demo: signs in to a real test account (needs the server in test mode so it returns the code)
+  const quickDemo = async (kind) => {
+    const d = DEMO[kind]; setErr(""); setBusy(true);
+    try {
+      const r = await api.post("/auth/request-otp", { phone: d.phone });
+      if (!r.dev_otp) throw new Error("Quick demo needs the server in test mode. Please sign in with your own number.");
+      const v = await api.post("/auth/verify", { phone: d.phone, otp: r.dev_otp, name: d.name, role: kind, language: kind === "elder" ? lang : "en-IN" });
+      setToken(v.token);
+      if (kind === "elder") await seedElder();
+      onDone(v.user);
+    } catch (e) { setErr(e.message); setBusy(false); }
+  };
+  const startDemoAsSenior = () => quickDemo("elder");
+  const startDemoAsFamily = () => quickDemo("family");
 
   return (
     <div className="app-shell">
@@ -54,7 +102,10 @@ export default function Login({ onDone }) {
             </p>
           </div>
 
-          {/* Quick Demo Shortcuts for Hackathon Jury */}
+          {busy && <p className="note" role="status" style={{ textAlign: "center" }}>{tr("Please wait… the server may need up to a minute to wake up the first time.", lang)}</p>}
+          {err && <p className="error" role="alert" style={{ textAlign: "center" }}>{err}</p>}
+
+          {/* Quick sign-in to ready-made test accounts */}
           <div style={{ display: "flex", gap: "0.6rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
             <button
               onClick={startDemoAsSenior}
@@ -182,7 +233,7 @@ export default function Login({ onDone }) {
                   style={{ width: "100%", padding: "0.8rem", borderRadius: "var(--radius-sm)", border: "2px solid var(--line)", marginTop: "0.3rem" }}
                 />
               </label>
-              <button className="big-action rose-filled" onClick={() => { setHint("123456"); setStep("otp"); }}>
+              <button className="big-action rose-filled" onClick={sendOtp} disabled={busy || clean(phone).replace(/\D/g, "").length < 10}>
                 {t.sendOtpBtn}
               </button>
               <button className="big-action" onClick={() => setStep(role === "elder" ? "lang" : "who")}>
@@ -204,10 +255,12 @@ export default function Login({ onDone }) {
                   style={{ width: "100%", padding: "0.8rem", borderRadius: "var(--radius-sm)", border: "2px solid var(--line)", marginTop: "0.3rem" }}
                 />
               </label>
-              <p style={{ textAlign: "center", color: "var(--ink-muted)", fontSize: "0.9rem", margin: 0 }}>
-                Demo OTP: <b>{hint || "123456"}</b>
-              </p>
-              <button className="big-action rose-filled" onClick={() => { onDone({ id: 1, name: name || "Sarala Devi", role, language: lang }); }}>
+              {hint && (
+                <p style={{ textAlign: "center", color: "var(--ink-muted)", fontSize: "0.9rem", margin: 0 }}>
+                  Test code: <b>{hint}</b>
+                </p>
+              )}
+              <button className="big-action rose-filled" onClick={verify} disabled={busy || otp.length < 6}>
                 {t.signInBtn}
               </button>
               <button className="big-action" onClick={() => setStep("phone")}>
