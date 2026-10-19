@@ -76,3 +76,7 @@ def healthz():
 from .services.registry import router as features_router  # noqa: E402
 
 app.include_router(features_router)
+# --- natural voices (text-to-speech) ---
+from .routers import tts as tts_router  # noqa: E402
+
+app.include_router(tts_router.router)
