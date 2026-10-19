@@ -2,9 +2,13 @@
 Provider is chosen by environment variables:
   GOOGLE_TTS_API_KEY                      -> Google Cloud Text-to-Speech (recommended, one simple call)
   BHASHINI_USER_ID + BHASHINI_API_KEY     -> Bhashini (government service; adapter written from public examples, test it)
+  (nothing set)                           -> "edge": free Microsoft Edge voices through the edge-tts library. No account, no card.
+                                             It is an unofficial route to a Microsoft service, so it is fine for a prototype
+                                             but may stop working; switch to Google or Bhashini for lasting use.
 Audio is cached on disk so each phrase is paid for once. Text is limited in length and calls are rate limited."""
 import base64
 import hashlib
+import importlib.util
 import logging
 import os
 import time
@@ -24,11 +28,17 @@ CACHE_DIR = Path(os.getenv("MEDIA_DIR", "./media")) / "tts"
 _hits = defaultdict(deque)
 
 
+EDGE_VOICES = {"en-IN": "en-IN-NeerjaNeural", "hi-IN": "hi-IN-SwaraNeural", "te-IN": "te-IN-ShrutiNeural", "ta-IN": "ta-IN-PallaviNeural",
+               "kn-IN": "kn-IN-SapnaNeural", "mr-IN": "mr-IN-AarohiNeural", "gu-IN": "gu-IN-DhwaniNeural", "bn-IN": "bn-IN-TanishaaNeural"}
+
+
 def _provider():
     if os.getenv("GOOGLE_TTS_API_KEY"):
         return "google"
     if os.getenv("BHASHINI_USER_ID") and os.getenv("BHASHINI_API_KEY"):
         return "bhashini"
+    if importlib.util.find_spec("edge_tts"):
+        return "edge"
     return None
 
 
@@ -72,6 +82,18 @@ async def _bhashini(text: str, lang: str, rate: float):
         return base64.b64decode(r.json()["pipelineResponse"][0]["audio"][0]["audioContent"]), "audio/wav"
 
 
+async def _edge(text: str, lang: str, rate: float):
+    import edge_tts  # imported here so the server still starts if the library is missing
+    pct = int(round((rate - 1.0) * 100))
+    buf = bytearray()
+    async for part in edge_tts.Communicate(text, EDGE_VOICES[lang], rate=f"{pct:+d}%").stream():
+        if part["type"] == "audio":
+            buf += part["data"]
+    if not buf:
+        raise RuntimeError("edge-tts returned no audio")
+    return bytes(buf), "audio/mpeg"
+
+
 async def _speak(text: str, lang: str, rate: float, request: Request) -> Response:
     text = (text or "").strip()
     if not text or len(text) > MAX_CHARS:
@@ -88,7 +110,8 @@ async def _speak(text: str, lang: str, rate: float, request: Request) -> Respons
     if audio_f.exists():
         return Response(audio_f.read_bytes(), media_type=mime_f.read_text() if mime_f.exists() else "audio/mpeg")
     try:
-        audio, mime = await (_google(text, lang, rate) if prov == "google" else _bhashini(text, lang, rate))
+        fn = {"google": _google, "bhashini": _bhashini, "edge": _edge}[prov]
+        audio, mime = await fn(text, lang, rate)
     except Exception:
         logging.exception("tts failed (%s, %s)", prov, lang)
         raise HTTPException(502, "Speech service failed")
