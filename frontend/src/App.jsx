@@ -15,7 +15,7 @@ export default function App() {
 
   const logout = () => { setToken(""); setUser(null); };
   if (!ready) return <main className="center"><p>Loading…</p></main>;
-  if (!user) return <Login onDone={(u) => api.get("/me").then(setUser).catch(() => setUser(u))} />;
+  if (!user) return <Login onDone={() => api.get("/me").then(setUser).catch(() => { setToken(""); window.alert("Could not sign you in. Please try again."); })} />;
   if (user.role === "elder") return <ElderApp user={user} onLogout={logout} />;
   if (user.role === "partner" || user.role === "chw") return <PartnerPortal user={user} onLogout={logout} />;
   return <FamilyPortal user={user} onLogout={logout} />;
