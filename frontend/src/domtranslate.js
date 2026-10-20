@@ -37,12 +37,15 @@ function walk(node) {
 
 export function setDomLanguage(l) {
   const next = l || "en-IN";
-  if (next === lang) return;
-  const prev = lang; lang = next;
+  if (next === lang) {
+    try { localStorage.setItem("db_lang", next); } catch { /* no storage */ }
+    return;
+  }
+  lang = next;
   try { localStorage.setItem("db_lang", next); } catch { /* no storage */ }
   document.documentElement.lang = next.slice(0, 2);
-  if (applied && prev !== next) { location.reload(); return; }   // switching between translated languages: start clean
-  if (started) walk(document.body);
+  // React re-renders via tr()/t(); do not reload (that reset in-app navigation).
+  applied = false;
 }
 
 export function startDomTranslate() {
