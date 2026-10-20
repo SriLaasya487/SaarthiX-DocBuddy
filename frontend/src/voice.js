@@ -126,6 +126,10 @@ function deviceSpeak(orig, out, lg) {
   return say(out, lg);
 }
 
+const emitVoice = (state, extra = {}) => {
+  W.dispatchEvent?.(new CustomEvent("db-voice", { detail: { state, lang: lastLang, ...extra } }));
+};
+
 export function speak(text, lang = lastLang) {
   if (!text) return Promise.resolve();
   const orig = String(text);
@@ -134,9 +138,10 @@ export function speak(text, lang = lastLang) {
   if (!isIndic(out)) { const tr = !lg.startsWith("en") ? translate(out, lg) : null; if (tr) out = tr; else lg = "en-IN"; }
   lastText = out; lastLang = lg;
   caption(out);
+  emitVoice("speaking", { text: out });
   const active = !W.navigator?.userActivation || W.navigator.userActivation.hasBeenActive;
-  if (!active) { pending = { out, lang: lg }; return Promise.resolve(); }   // wait for the first tap
-  return play(out, lg, orig);
+  if (!active) { pending = { out, lang: lg }; emitVoice("idle"); return Promise.resolve(); }
+  return Promise.resolve(play(out, lg, orig)).finally(() => emitVoice("idle"));
 }
 // the first tap anywhere plays whatever was waiting (e.g. the home-screen greeting)
 ["pointerdown", "keydown", "touchstart"].forEach((ev) => W.addEventListener?.(ev, () => { if (pending) { const p = pending; pending = null; play(p.out, p.lang); } }, { passive: true }));
