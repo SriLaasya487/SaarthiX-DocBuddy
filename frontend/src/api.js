@@ -1,6 +1,6 @@
 import { cacheGet, cacheSet, enqueue, flush, toOp } from "./offline.js";
 import { demoCall } from "./demo.js";
-import { setDomLanguage } from "./domtranslate.js";
+import { persistLang } from "./locales/lang.js";
 
 const BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 // Demo mode: no backend needed. On the live site it is on automatically when VITE_API_URL is not set.
@@ -14,9 +14,9 @@ const NOCACHE = /^\/(me\/export|.*\/(file|audio))/;
 // remember the chosen language so every screen can be shown in it
 function noteLanguage(method, path, body, data) {
   try {
-    if (path === "/me" && method === "GET" && data?.language) setDomLanguage(data.language);
-    else if (path === "/me" && method === "PATCH" && body?.language) setDomLanguage(body.language);
-    else if (path === "/auth/verify" && data?.user?.language) setDomLanguage(data.user.language);
+    if (path === "/me" && method === "GET" && data?.language) persistLang(data.language);
+    else if (path === "/me" && method === "PATCH" && body?.language) persistLang(body.language);
+    else if (path === "/auth/verify" && data?.user?.language) persistLang(data.user.language);
   } catch { /* never block the app */ }
 }
 
