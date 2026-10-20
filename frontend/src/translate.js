@@ -1,3 +1,4 @@
+import { MORE_ROWS } from "./translate_more.js";
 // Simple translations for the first-use screens (Hindi, Telugu). English text is the key.
 // Please have a native speaker read these before you present.
 const ROWS = [
@@ -348,16 +349,23 @@ const ROWS = [
 ["Open →","खोलिए →","తెరవండి →"],
 ["Please wait… the server may need up to a minute to wake up the first time.","कृपया रुकिए… पहली बार सर्वर को जागने में एक मिनट तक लग सकता है।","దయచేసి వేచి ఉండండి… మొదటిసారి సర్వర్ మేల్కొనడానికి ఒక నిమిషం పట్టవచ్చు."],
 ];
-const DICT = { hi: {}, te: {} };
+const DICT = { hi: {}, te: {}, ta: {}, kn: {}, mr: {}, gu: {}, bn: {} };
 const PATS = [];
-ROWS.forEach(([e, h, t]) => {
-  DICT.hi[e] = h; DICT.te[e] = t;
-  if (/\{\w+\}/.test(e)) {
+const addPattern = (e, code, val) => {
+  if (!/\{\w+\}/.test(e)) return;
+  let p = PATS.find((x) => x.src === e);
+  if (!p) {
     const names = [];
     const re = new RegExp("^" + e.replace(/[.*+?^$()|[\]\\]/g, "\\$&").replace(/\{(\w+)\}/g, (_, n) => { names.push(n); return "(.+?)"; }) + "$");
-    PATS.push({ re, names, hi: h, te: t });
+    p = { src: e, re, names, out: {} };
+    PATS.push(p);
   }
-});
+  p.out[code] = val;
+};
+ROWS.forEach(([e, h, t]) => { DICT.hi[e] = h; DICT.te[e] = t; addPattern(e, "hi", h); addPattern(e, "te", t); });
+const MORE_CODES = ["ta", "kn", "mr", "gu", "bn"];
+MORE_ROWS.forEach(([e, ...vals]) => MORE_CODES.forEach((c, i) => { DICT[c][e] = vals[i]; addPattern(e, c, vals[i]); }));
+
 const dict = (lang) => DICT[(lang || "").slice(0, 2)];
 export const t = (s, lang = "en-IN", v = {}) => { let o = (dict(lang) && dict(lang)[s]) || s; for (const k in v) o = o.split("{" + k + "}").join(v[k]); return o; };
 export const hasTx = (s, lang) => !!(dict(lang) && dict(lang)[s]);
@@ -366,6 +374,9 @@ export function translate(s, lang) {
   const d = dict(lang); if (!d) return null;
   const k = String(s).trim(); if (d[k]) return d[k];
   const code = (lang || "").slice(0, 2);
-  for (const p of PATS) { const m = k.match(p.re); if (m) { let o = p[code]; p.names.forEach((n, i) => { o = o.split("{" + n + "}").join(m[i + 1]); }); return o; } }
+  for (const p of PATS) {
+    const m = k.match(p.re); const o0 = p.out[code];
+    if (m && o0) { let o = o0; p.names.forEach((n, i) => { o = o.split("{" + n + "}").join(m[i + 1]); }); return o; }
+  }
   return null;
 }

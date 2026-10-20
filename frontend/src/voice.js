@@ -17,7 +17,7 @@ export const LANGUAGES = [
   { code: "bn-IN", label: "বাংলা", native: "বাংলা", english: "Bengali" },
 ];
 // Languages whose screens are fully translated (see i18n.js). Add a code here once its text is translated.
-export const SUPPORTED = ["en-IN", "hi-IN", "te-IN"];
+export const SUPPORTED = ["en-IN", "hi-IN", "te-IN", "ta-IN", "kn-IN", "mr-IN", "gu-IN", "bn-IN"];
 
 let lastText = "", lastLang = "en-IN", rate = 0.9, pending = null;
 export const setRate = (r) => { rate = r; };
