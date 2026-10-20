@@ -44,7 +44,8 @@ export const TRANSLATIONS = {
       daily: "Govt Benefits",
       community: "Friends",
       pending: "Please Check",
-      settings: "Settings"
+      settings: "Settings",
+      ask: "Ask AarogyaSaathi"
     }
   },
   "hi-IN": {
@@ -52,7 +53,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "बुजुर्गों और परिवार के लिए आत्मीय साथी",
     tagline: "आवाज़ से चलने वाला सरल साथी। बड़े बटन, कोई उलझन नहीं।",
     seniorRole: "मैं वरिष्ठ नागरिक हूँ",
+    seniorRoleDesc: "बड़े अक्षर, आवाज़ और आसान जाँच",
     familyRole: "मैं परिवार या डॉक्टर हूँ",
+    familyRoleDesc: "सहमति वाली जानकारी और देखभाल टीम",
     chwRole: "स्वास्थ्य कार्यकर्ता (आशा / नर्स)",
     orgRole: "संस्था / एनजीओ",
     chooseLangTitle: "अपनी भाषा चुनें",
@@ -90,7 +93,8 @@ export const TRANSLATIONS = {
       daily: "सरकारी योजनाएं",
       community: "मित्र समूह",
       pending: "मंजूरी दें",
-      settings: "सेटिंग्स"
+      settings: "सेटिंग्स",
+      ask: "आरोग्य साथी से पूछें"
     }
   },
   "te-IN": {
@@ -98,7 +102,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "పెద్దలు మరియు వారి కుటుంబ సంరక్షకుడు",
     tagline: "వాయిస్ ఆధారిత సులభమైన యాప్. పెద్ద బటన్లు, టైపింగ్ శ్రమ లేదు.",
     seniorRole: "నేను సీనియర్ సిటిజన్‌ని",
+    seniorRoleDesc: "పెద్ద అక్షరాలు, వాయిస్, సులభ తనిఖీలు",
     familyRole: "నేను కుటుంబ సభ్యుడిని / వైద్యుడిని",
+    familyRoleDesc: "అనుమతి ఉన్న సమాచారం మరియు కేర్ టీమ్",
     chwRole: "ఆరోగ్య కార్యకర్త (ఆశా / నర్స్)",
     orgRole: "సంస్థ / స్వచ్ఛంద సంస్థ",
     chooseLangTitle: "మీ భాషను ఎంచుకోండి",
@@ -136,7 +142,8 @@ export const TRANSLATIONS = {
       daily: "ప్రభుత్వ పథకాలు",
       community: "స్నేహితులు",
       pending: "ధృవీకరించండి",
-      settings: "సెట్టింగులు"
+      settings: "సెట్టింగులు",
+      ask: "ఆరోగ్య సాథీని అడగండి"
     }
   },
   "ta-IN": {
@@ -144,7 +151,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "முதியவர்களுக்கான பாசமான நலத் துணை",
     tagline: "குரல் வழி எளிய ஆரோக்கியத் துணை. பெரிய பொத்தான்கள்.",
     seniorRole: "நான் முதியவர்",
+    seniorRoleDesc: "பெரிய எழுத்து, குரல், எளிய சோதனை",
     familyRole: "நான் குடும்ப உறுப்பினர் / மருத்துவர்",
+    familyRoleDesc: "ஒப்புதல் பெற்ற தகவல் மற்றும் பராமரிப்பு குழு",
     chwRole: "சுகாதார பணியாளர் (ஆஷா)",
     orgRole: "நிறுவனம் / தொண்டு நிறுவனம்",
     chooseLangTitle: "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்",
@@ -182,7 +191,8 @@ export const TRANSLATIONS = {
       daily: "அரசு உதவிகள்",
       community: "நண்பர்கள்",
       pending: "சரிபார்க்கவும்",
-      settings: "அமைப்புகள்"
+      settings: "அமைப்புகள்",
+      ask: "ஆரோக்ய சாதியிடம் கேளுங்கள்"
     }
   },
   "kn-IN": {
@@ -190,7 +200,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "ಹಿರಿಯರು ಮತ್ತು ಕುಟುಂಬದ ಪ್ರೀತಿಯ ಒಡನಾಡಿ",
     tagline: "ಧ್ವನಿ ಆಧಾರಿತ ಸುಲಭ ಸಹಾಯಕ. ದೊಡ್ಡ ಬಟನ್‌ಗಳು.",
     seniorRole: "ನಾನು ಹಿರಿಯ ನಾಗರಿಕ",
+    seniorRoleDesc: "ದೊಡ್ಡ ಅಕ್ಷರ, ಧ್ವನಿ, ಸುಲಭ ತಪಾಸಣೆ",
     familyRole: "ನಾನು ಕುಟುಂಬದ ಸದಸ್ಯ / ವೈದ್ಯ",
+    familyRoleDesc: "ಒಪ್ಪಿಗೆಯ ಮಾಹಿತಿ ಮತ್ತು ಆರೈಕೆ ತಂಡ",
     chwRole: "ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತೆ (ಆಶಾ)",
     orgRole: "ಸಂಸ್ಥೆ / ಎನ್‌ಜಿಒ",
     chooseLangTitle: "ನಿಮ್ಮ ಭಾಷೆ ಆರಿಸಿ",
@@ -228,7 +240,8 @@ export const TRANSLATIONS = {
       daily: "ಸರ್ಕಾರಿ ಸೌಲಭ್ಯಗಳು",
       community: "ಸ್ನೇಹಿತರು",
       pending: "ಪರಿಶೀಲಿಸಿ",
-      settings: "ಸೆಟ್ಟಿಂಗ್ಸ್"
+      settings: "ಸೆಟ್ಟಿಂಗ್ಸ್",
+      ask: "ಆರೋಗ್ಯ ಸಾಥಿಯನ್ನು ಕೇಳಿ"
     }
   },
   "mr-IN": {
@@ -236,7 +249,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "ज्येष्ठ नागरिक व कुटुंबीयांचा विश्वासू साथी",
     tagline: "आवाजावर चालणारे सोपे ॲप. मोठी बटणे, कसलाही ताण नाही.",
     seniorRole: "मी ज्येष्ठ नागरिक आहे",
+    seniorRoleDesc: "मोठी अक्षरे, आवाज आणि सोपी तपासणी",
     familyRole: "मी कुटुंबातील सदस्य किंवा डॉक्टर आहे",
+    familyRoleDesc: "संमतीची माहिती आणि काळजी टीम",
     chwRole: "आरोग्य कार्यकर्ता (आशा / नर्स)",
     orgRole: "संस्था / एनजीओ",
     chooseLangTitle: "आपली भाषा निवडा",
@@ -274,7 +289,8 @@ export const TRANSLATIONS = {
       daily: "सरकारी योजना",
       community: "मित्रमंडळ",
       pending: "तपासा",
-      settings: "सेटिंग्ज"
+      settings: "सेटिंग्ज",
+      ask: "आरोग्य साथीला विचारा"
     }
   },
   "gu-IN": {
@@ -282,7 +298,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "વડીલો અને પરિવાર માટે પ્રેમાળ સાથી",
     tagline: "અવાજ-આધારિત સરળ એપ. મોટા બટનો, વાંચવામાં સરળ.",
     seniorRole: "હું વરિષ્ઠ નાગરિક છું",
+    seniorRoleDesc: "મોટા અક્ષર, અવાજ અને સરળ તપાસ",
     familyRole: "હું પરિવારનો સભ્ય અથવા ડૉક્ટર છું",
+    familyRoleDesc: "સંમતિની માહિતી અને કાળજી ટીમ",
     chwRole: "આશા કાર્યકર / નર્સ",
     orgRole: "સંસ્થા / એનજીઓ",
     chooseLangTitle: "તમારી ભાષા પસંદ કરો",
@@ -320,7 +338,8 @@ export const TRANSLATIONS = {
       daily: "સરકારી યોજનાઓ",
       community: "મિત્રો",
       pending: "ચકાસો",
-      settings: "સેટિંગ્સ"
+      settings: "સેટિંગ્સ",
+      ask: "આરોગ્ય સાથીને પૂછો"
     }
   },
   "bn-IN": {
@@ -328,7 +347,9 @@ export const TRANSLATIONS = {
     brandSubtitle: "প্রবীণ ও পরিবারের যত্নশীল সঙ্গী",
     tagline: "ভয়েস-ভিত্তিক সহজ অ্যাপ। বড় বোতাম, কোনো জটিলতা নেই।",
     seniorRole: "আমি প্রবীণ নাগরিক",
+    seniorRoleDesc: "বড় অক্ষর, ভয়েস ও সহজ চেক-ইন",
     familyRole: "আমি পরিবারের সদস্য বা ডাক্তার",
+    familyRoleDesc: "সম্মতি পাওয়া তথ্য ও যত্ন দল",
     chwRole: "স্বাস্থ্যকর্মী (আশা / নার্স)",
     orgRole: "সংস্থা / এনজিও",
     chooseLangTitle: "আপনার ভাষা বেছে নিন",
@@ -366,7 +387,8 @@ export const TRANSLATIONS = {
       daily: "সরকারি প্রকল্প",
       community: "বন্ধুরা",
       pending: "যাচাই করুন",
-      settings: "সেটিংস"
+      settings: "সেটিংস",
+      ask: "আরোগ্য সাথীকে জিজ্ঞাসা করুন"
     }
   }
 };
