@@ -1,4 +1,5 @@
 import { MORE_ROWS } from "./translate_more.js";
+import { EXTRA_ROWS } from "./locales/strings.js";
 // Simple translations for the first-use screens (Hindi, Telugu). English text is the key.
 // Please have a native speaker read these before you present.
 const ROWS = [
@@ -365,6 +366,12 @@ const addPattern = (e, code, val) => {
 ROWS.forEach(([e, h, t]) => { DICT.hi[e] = h; DICT.te[e] = t; addPattern(e, "hi", h); addPattern(e, "te", t); });
 const MORE_CODES = ["ta", "kn", "mr", "gu", "bn"];
 MORE_ROWS.forEach(([e, ...vals]) => MORE_CODES.forEach((c, i) => { DICT[c][e] = vals[i]; addPattern(e, c, vals[i]); }));
+EXTRA_ROWS.forEach(([e, h, te, ta, kn, mr, gu, bn]) => {
+  DICT.hi[e] = h; DICT.te[e] = te;
+  addPattern(e, "hi", h); addPattern(e, "te", te);
+  const rest = { ta, kn, mr, gu, bn };
+  MORE_CODES.forEach((c) => { if (rest[c]) { DICT[c][e] = rest[c]; addPattern(e, c, rest[c]); } });
+});
 
 const dict = (lang) => DICT[(lang || "").slice(0, 2)];
 export const t = (s, lang = "en-IN", v = {}) => { let o = (dict(lang) && dict(lang)[s]) || s; for (const k in v) o = o.split("{" + k + "}").join(v[k]); return o; };
