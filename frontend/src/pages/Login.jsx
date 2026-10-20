@@ -12,7 +12,11 @@ async function seedElder() {
   const tryit = async (fn) => { try { await fn(); } catch { /* skip */ } };
   let meds = [];
   try { meds = await api.get("/medicines"); } catch { /* none */ }
-  if (meds.length) return;
+  if (!meds.length) await seedBasics(tryit);
+  await seedExtras(tryit);
+}
+
+async function seedBasics(tryit) {
   await tryit(() => api.post("/medicines", { name: "Metformin 500mg", tablets: 1, times: "09:00,21:00", stock: 20, color: "white" }));
   await tryit(() => api.post("/medicines", { name: "Amlodipine 5mg", tablets: 1, times: "09:00", stock: 30, color: "pink" }));
   await tryit(() => api.post("/vitals", { kind: "bp", value1: 138, value2: 88 }));
@@ -22,6 +26,18 @@ async function seedElder() {
   for (const dt of ["medicines", "report", "vitals", "mood", "imfine"]) {
     await tryit(() => api.post("/consents", { grantee_phone: DEMO.family.phone, grantee_name: "Rohan", data_type: dt, scope: "view", days: null, relation: "son" }));
   }
+}
+
+async function seedExtras(tryit) {
+  let notes = null;
+  try { notes = await api.get("/symptoms"); } catch { return; }
+  if (notes.length) return;
+  await tryit(() => api.post("/symptoms", { text: "Knee pain at night, better after rest" }));
+  await tryit(() => api.post("/symptoms", { text: "Felt dizzy once in the morning" }));
+  await tryit(() => api.post("/documents", { kind: "lab", title: "Blood sugar report (October)", expires_on: null, file_b64: "", file_ext: "jpg" }));
+  await tryit(() => api.post("/previsit/questions", { question: "Can I reduce the evening Metformin dose?" }));
+  await tryit(() => api.post("/checkin", { mood: "good", pain: "mild", took_medicines: true, needs_help: false, doctor_visit_soon: true }));
+  await tryit(() => api.post("/community/join"));
 }
 
 export default function Login({ onDone }) {
@@ -90,7 +106,7 @@ export default function Login({ onDone }) {
       <main className="main-content">
         <div className="login-box">
           <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-            <span style={{ fontSize: "2.8rem" }} role="img" aria-label="Flower">🌸</span>
+            <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" width={72} height={72} style={{ borderRadius: 18 }} />
             <h1 style={{ fontSize: "2.2rem", margin: "0.4rem 0 0.2rem", color: "var(--rose-primary)" }}>
               {t.brandName}
             </h1>
@@ -106,6 +122,7 @@ export default function Login({ onDone }) {
           {err && <p className="error" role="alert" style={{ textAlign: "center" }}>{err}</p>}
 
           {/* Quick sign-in to ready-made test accounts */}
+          {step === "who" && (
           <div style={{ display: "flex", gap: "0.6rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
             <button
               onClick={startDemoAsSenior}
@@ -140,6 +157,7 @@ export default function Login({ onDone }) {
               👨‍👦 {t.demoBypassFamily}
             </button>
           </div>
+          )}
 
           {step === "who" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>

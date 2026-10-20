@@ -7,6 +7,7 @@ import { scheduleDoseAlarms } from "../offline.js";
 import { speak, hearAgain, slowDown, canListen, listen, voiceNav, loadLexicon } from "../voice.js";
 
 import SosButton from "./SosButton.jsx";
+import Welcome from "./Welcome.jsx";
 import FallGuard from "./FallGuard.jsx";
 import CheckIn from "./CheckIn.jsx";
 import Medicines from "./Medicines.jsx";
@@ -31,6 +32,7 @@ export default function ElderApp({ user: u0, onLogout }) {
   const [fineErr, setFineErr] = useState("");
   const [call, setCall] = useState(null);      // incoming video call
   const [alarm, setAlarm] = useState(null);    // medicine time reached
+  const [tour, setTour] = useState(!localStorage.getItem("db_tour"));
   const [navModal, setNavModal] = useState(false);
   const [listening, setListening] = useState(false);
   const [spokenFeedback, setSpokenFeedback] = useState("");
@@ -132,7 +134,7 @@ export default function ElderApp({ user: u0, onLogout }) {
     <div className="app-shell">
       <header className="clean-header">
         <div className="clean-brand">
-          <span>🌸</span>
+          <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" width={34} height={34} style={{ borderRadius: 9 }} />
           <span>{t.brandName}</span>
         </div>
         <div className="header-actions">
@@ -145,6 +147,7 @@ export default function ElderApp({ user: u0, onLogout }) {
         </div>
       </header>
 
+      {tour && <Welcome lang={lang} onDone={() => { localStorage.setItem("db_tour", "1"); setTour(false); }} />}
       <FallGuard lang={lang} />
 
       {call && (
